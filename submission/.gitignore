@@ -1,0 +1,11 @@
+# --- Node ---
+source/tools/node_modules/
+
+# --- Video pipeline intermediates (regenerable) ---
+source/video/lines/
+source/video/master.wav
+source/video/mix.wav
+source/video/lines.json
+
+# --- OS ---
+.DS_Store

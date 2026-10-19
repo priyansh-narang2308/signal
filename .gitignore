@@ -1,20 +1,50 @@
 # --- OS junk ---
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# --- Tool/agent state ---
+# --- Tool / agent state ---
 .freebuff/
+
+# --- IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 
 # --- Node ---
 node_modules/
+package-lock.json
 
 # --- Python ---
 __pycache__/
 *.pyc
+*.pyo
 .venv/
+venv/
+env/
+*.egg-info/
 
-# --- Video pipeline intermediates (audio masters and frame tiles are regenerable) ---
+# --- Large media: video & audio masters (tracked via Git LFS or external hosting) ---
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+*.flac
+
+# --- Video pipeline intermediates (regenerable from source scripts) ---
 source/video/master.wav
 source/video/mix.wav
 source/video/lines/
 source/video/lines.json
+
+# --- Rendered subtitle overlays (regenerable) ---
+submission/source/review/cues/*.png
+
+# --- Logs & temp ---
+*.log
+tmp/
+.tmp/
