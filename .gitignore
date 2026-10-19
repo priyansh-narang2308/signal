@@ -1,0 +1,20 @@
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+
+# --- Tool/agent state ---
+.freebuff/
+
+# --- Node ---
+node_modules/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+
+# --- Video pipeline intermediates (audio masters and frame tiles are regenerable) ---
+source/video/master.wav
+source/video/mix.wav
+source/video/lines/
+source/video/lines.json
