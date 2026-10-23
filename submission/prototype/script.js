@@ -444,6 +444,7 @@
 
   let currentEv = "fs";
   function renderEvidence(id) {
+    if (window.SIGNAL_LIVE && window.SIGNAL_LIVE.result) return window.SIGNAL_LIVE.renderEvidence(id);
     currentEv = EV[id] ? id : "fs";
     $("#evList").innerHTML = EV_ORDER.map((k) => `<button class="ev-item ${k === currentEv ? "active" : ""}" data-ev="${k}"><div class="v">${EV[k].v}</div><div class="k">${EV[k].k}</div><div class="tag">${EV[k].tag}</div></button>`).join("");
     const e = EV[currentEv];
@@ -583,6 +584,7 @@
 
   function bind() {
     $("#runBtn").addEventListener("click", () => {
+      if (window.SIGNAL_LIVE && window.SIGNAL_LIVE.active) { window.SIGNAL_LIVE.run(); return; }
       const b = $("#runBtn");
       b.classList.add("pressed");
       setTimeout(() => b.classList.remove("pressed"), 160);
@@ -614,6 +616,8 @@
   bind();
   if (STATIC) finishRun();
   route();
+
+  window.SIGNAL_CORE = { go, route, renderRunShell, renderEvidence, $, $$, h, STAGES, setRunState: (s) => { runState = s; }, clearTimers };
 
   if (VIDEO) {
     window.SIGNAL = {

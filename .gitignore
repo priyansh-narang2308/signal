@@ -48,3 +48,10 @@ submission/source/review/cues/*.png
 *.log
 tmp/
 .tmp/
+
+# --- SIGNAL live engine ---
+engine/cache/
+engine/results/
+engine/fixtures/
+engine/.env
+__pycache__/
