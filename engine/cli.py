@@ -41,7 +41,45 @@ def cmd_probe(sym):
     print("4) panel ...")
     recs = panel.build(sym)
     for r in recs:
-        print("   %s  %-10s  %d mapped  %s" % (r["end"], r["label"], len(r["raw"]), r["basis"]))
+        print("   %s  %-10s  %2d mapped  %-12s %s" % (r["end"], r["label"], len(r["raw"]), r["basis"], r["url"].rsplit("/", 1)[-1][:60]))
+    if recs:
+        print("5) newest quarter mapped facts (%s):" % recs[-1]["label"])
+        for k, v in sorted(recs[-1]["raw"].items()):
+            print("     %-18s %-50s %s" % (k, recs[-1]["tags"][k], v))
+
+
+def cmd_rows(sym):
+    """Diagnose filings that have no recognised XBRL link (e.g. Integrated Filings)."""
+    import urllib.parse
+    nse.warm()
+    rows = nse.filings(sym)
+    no = [r for r in rows if not nse.find_xbrl_url(r)]
+    print("%d rows, %d without a recognised XBRL link" % (len(rows), len(no)))
+    print("\nNEWEST 3 ROWS (full):")
+    def key(r):
+        d = panel._row_period_end(r)
+        return d.isoformat() if d else ""
+    for r in sorted(rows, key=key, reverse=True)[:3]:
+        print(json.dumps(r)[:900])
+        print("-")
+    s = urllib.parse.quote(sym)
+    cands = [
+        "/api/integrated-filing-results?index=equities&symbol=%s" % s,
+        "/api/integrated-filing-results?index=equities&symbol=%s&period=Quarterly" % s,
+        "/api/corporates-integrated-filing?index=equities&symbol=%s" % s,
+        "/api/integrated-filing-financials?index=equities&symbol=%s" % s,
+        "/api/corporate-integrated-filing?index=equities&symbol=%s" % s,
+        "/api/corporates-financial-results?index=equities&symbol=%s&period=Quarterly&type=Integrated%%20Filing-%%20Financials" % s,
+        "/api/results-comparision?symbol=%s" % s,
+    ]
+    print("\nCANDIDATE ENDPOINTS:")
+    for c in cands:
+        try:
+            raw = nse._get(nse.BASE + c, tries=1)
+            print("OK  ", c, "->", raw[:400].decode("utf-8", "replace").replace("\n", " "))
+        except Exception as e:  # noqa: BLE001
+            print("FAIL", c, "->", str(e)[:120])
+        print()
 
 
 def cmd_run(sym):
@@ -102,6 +140,8 @@ if __name__ == "__main__":
     c = sys.argv[1]
     if c == "probe":
         cmd_probe(sys.argv[2].upper())
+    elif c == "rows":
+        cmd_rows(sys.argv[2].upper())
     elif c == "run":
         sys.exit(cmd_run(sys.argv[2].upper()))
     elif c == "prefetch":

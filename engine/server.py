@@ -39,8 +39,12 @@ class H(SimpleHTTPRequestHandler):
         super().__init__(*a, directory=UI, **k)
 
     def log_message(self, fmt, *args):
-        if "/api/job/" not in (args[0] if args else ""):
-            sys.stderr.write("  " + (fmt % args) + "\n")
+        try:
+            line = fmt % args
+        except Exception:
+            line = f"{fmt} {args}"
+        if "/api/job/" not in line:
+            sys.stderr.write("  " + line + "\n")
 
     def _json(self, obj, code=200):
         body = json.dumps(obj).encode("utf-8")
@@ -60,6 +64,8 @@ class H(SimpleHTTPRequestHandler):
         u = urllib.parse.urlparse(self.path)
         qs = urllib.parse.parse_qs(u.query)
         p = u.path
+        if p.startswith("/.well-known/"):
+            return self._json({}, 404)
         if p == "/api/health":
             return self._json({"ok": True, "mode": "live", "offline": os.environ.get("SIGNAL_OFFLINE") == "1"})
         if p == "/api/universe":
@@ -73,7 +79,10 @@ class H(SimpleHTTPRequestHandler):
             job = JOBS.get(p.rsplit("/", 1)[-1])
             if not job:
                 return self._json({"error": "unknown job"}, 404)
-            since = int((qs.get("since") or ["0"])[0])
+            try:
+                since = int((qs.get("since") or ["0"])[0])
+            except (ValueError, TypeError):
+                since = 0
             st = job.state(since)
             if job.done and job.result:
                 st["result"] = job.result

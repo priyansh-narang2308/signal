@@ -195,7 +195,7 @@ def test_integrity(records, arche):
 def analyse(target, records, peers, arche):
     """target: symbol; records: target quarter records; peers: {sym: records}."""
     lib = library.METRICS.get(arche, library.METRICS["generic"])
-    quarters = [r["end"] for r in records][-12:]
+    quarters = [r["end"] for r in records][-16:]
     labels = {r["end"]: r["label"] for r in records}
     recmap = {r["end"]: r for r in records}
     size_canon = next((c for c in ("interest_earned", "revenue", "total_income") if any(c in r["raw"] for r in records)), None)

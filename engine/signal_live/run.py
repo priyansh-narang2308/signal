@@ -57,7 +57,7 @@ def execute(job):
         peers, names = {}, {}
         for p in peer_syms:
             try:
-                r = panel.build(p)
+                r = panel.build(p, max_quarters=12)
                 if len(r) >= 4:
                     peers[p] = r
                     names[p] = library.UNIVERSE.get(p, (p,))[0]

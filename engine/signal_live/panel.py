@@ -4,7 +4,7 @@ import re
 
 from . import library, nse, xbrl
 
-MAX_QUARTERS = 12
+MAX_QUARTERS = 16
 
 
 def _parse_row_date(s):
@@ -38,7 +38,7 @@ def _row_basis(row):
 
 
 def _row_period_end(row):
-    for k in ("toDate", "to_date", "periodEnded", "period_end", "toDt"):
+    for k in ("toDate", "to_date", "periodEnded", "period_end", "toDt", "qe_Date", "qeDate", "period_ended", "quarterEnded", "qtr_end_date"):
         d = _parse_row_date(row.get(k))
         if d:
             return d
@@ -46,7 +46,7 @@ def _row_period_end(row):
 
 
 def _row_filed(row):
-    for k in ("filingDate", "broadCastDate", "broadcastDate", "exchdisstime", "submissionDate"):
+    for k in ("filingDate", "broadCastDate", "broadcastDate", "broadcast_Date", "creation_Date", "exchdisstime", "submissionDate"):
         d = _parse_row_date(row.get(k))
         if d:
             return d
@@ -77,7 +77,17 @@ def archetype(symbol):
 
 def build(symbol, prefer="standalone", log=None, max_quarters=MAX_QUARTERS):
     """Return list of quarter records sorted oldest→newest."""
-    rows = nse.filings(symbol)
+    rows = []
+    try:
+        rows += nse.integrated(symbol)
+    except Exception as e:  # noqa: BLE001
+        if log:
+            log("integrated filings unavailable (%s)" % str(e)[:60])
+    try:
+        rows += nse.filings(symbol)
+    except Exception as e:  # noqa: BLE001
+        if log:
+            log("legacy results list unavailable (%s)" % str(e)[:60])
     cands = []
     for row in rows:
         url = nse.find_xbrl_url(row)
@@ -87,7 +97,7 @@ def build(symbol, prefer="standalone", log=None, max_quarters=MAX_QUARTERS):
     # prefer requested basis when the listing tells us; newest filing per period wins (revisions)
     if any(c["basis"] == prefer for c in cands):
         cands = [c for c in cands if c["basis"] in (prefer, "")]
-    cands.sort(key=lambda c: (c["end"] or dt.date.min, c["filed"] or dt.date.min), reverse=True)
+    cands.sort(key=lambda c: (c["end"] or c["filed"] or dt.date.min, c["filed"] or dt.date.min), reverse=True)
 
     out, seen = [], set()
     for c in cands:

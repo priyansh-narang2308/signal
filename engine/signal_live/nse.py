@@ -23,7 +23,7 @@ OFFLINE = os.environ.get("SIGNAL_OFFLINE") == "1"
 BASE = "https://www.nseindia.com"
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
-MIN_GAP = 0.8  # seconds between live requests
+MIN_GAP = 0.45  # seconds between live requests
 
 _jar = http.cookiejar.CookieJar()
 _opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(_jar))
@@ -136,6 +136,19 @@ def filings(symbol):
     return data or []
 
 
+def integrated(symbol):
+    """Integrated Filing (Financials) — NSE's format from Q4 FY25 onward, inline XBRL."""
+    s = urllib.parse.quote(symbol)
+    url = BASE + "/api/integrated-filing-results?index=equities&symbol=" + s + "&period=Quarterly"
+    data = _json("integrated", symbol, url, BASE + "/companies-listing/corporate-integrated-filing", max_age_h=12)
+    if isinstance(data, dict):
+        for k in ("data", "rows", "results"):
+            if isinstance(data.get(k), list):
+                return data[k]
+        return []
+    return data or []
+
+
 def xbrl(url):
     """Download one XBRL instance (cached forever: filings are immutable)."""
     path = _cache_path("xbrl", url.split("//", 1)[-1])
@@ -145,7 +158,7 @@ def xbrl(url):
     if OFFLINE:
         raise FetchError("offline: no fixture for " + url)
     warm()
-    raw = _get(url, referer=BASE + "/", accept="application/xml,text/xml,*/*")
+    raw = _get(url, referer=BASE + "/", accept="application/xml,text/xml,text/html,*/*")
     if b"<" not in raw[:200]:
         raise FetchError("not XML: " + url)
     with open(path, "wb") as f:
@@ -154,7 +167,11 @@ def xbrl(url):
 
 
 def find_xbrl_url(row):
-    """NSE has used several field names over time; find the XBRL link defensively."""
+    """NSE has used several field names over time; find the XBRL / inline-XBRL link defensively."""
+    for k in ("xbrl", "xbrlFile", "xbrl_file", "XBRL", "xbrlUrl", "ixbrl", "iXbrl", "ixbrlFile"):
+        v = row.get(k)
+        if isinstance(v, str) and v.lower().endswith((".xml", ".html", ".htm")) and "xbrl" in v.lower():
+            return v if v.startswith("http") else "https://nsearchives.nseindia.com" + v
     for k in ("xbrl", "xbrlFile", "xbrl_file", "XBRL", "xbrlUrl"):
         v = row.get(k)
         if isinstance(v, str) and v.lower().endswith(".xml"):

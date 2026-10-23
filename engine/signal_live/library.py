@@ -60,7 +60,7 @@ RAW = [
     ("pbt", r"^profit(loss)?(from(ordinary)?activities)?beforetax$|^profitbeforetax$|beforeexceptional.*tax", r""),
     ("pat", r"^profit(loss)?for(the)?period$|^netprofit(loss)?for(the)?period$|^profitlossforperiodfromcontinuingoperations$", r"attributable|minority|noncontrolling|beforetax"),
     ("gnpa_amt", r"gross(npa|nonperformingassets|nonperformingasset)s?$|^grossnpa", r"percent|ratio|percentage"),
-    ("nnpa_amt", r"^net(npa|nonperformingassets|nonperformingasset)s?$|^netnpa$", r"percent|ratio|percentage|gross"),
+    ("nnpa_amt", r"^net(npa|nonperformingassets|nonperformingasset)s?$|^netnpa$|^nonperformingassets$", r"percent|ratio|percentage|gross"),
     ("gnpa_pct", r"(percent|percentage|ratio).*gross.*(npa|nonperforming)|gross.*(npa|nonperforming).*(percent|percentage|ratio)", r""),
     ("nnpa_pct", r"(percent|percentage|ratio).*net.*(npa|nonperforming)|^(?!.*gross).*net.*(npa|nonperforming).*(percent|percentage|ratio)|^percentageofnpa$", r"gross"),
     ("roa", r"returnonassets", r""),
@@ -86,9 +86,9 @@ def map_facts(facts):
             if inc.search(low) and not (exc and exc.search(low)):
                 out[canon] = (facts[name], name)
                 break
-    # percentages reported as fractions in some filings
+    # NSE XBRL reports ratios as fractions (0.0116 = 1.16%): convert to percent
     for k in ("gnpa_pct", "nnpa_pct", "roa", "car"):
-        if k in out and 0 < abs(out[k][0]) < 0.2 and k != "roa":
+        if k in out and abs(out[k][0]) < 1:
             out[k] = (out[k][0] * 100, out[k][1])
     return out
 

@@ -55,3 +55,6 @@ engine/results/
 engine/fixtures/
 engine/.env
 __pycache__/
+
+# --- Docs ---
+docs/

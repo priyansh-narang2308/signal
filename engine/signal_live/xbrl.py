@@ -34,9 +34,71 @@ def _num(text):
     return -v if neg else v
 
 
+_TAG = re.compile(r"<[^>]+>")
+_ATTR = re.compile(r'([\w:.-]+)\s*=\s*("([^"]*)"|\'([^\']*)\')')
+
+
+def _attrs(s):
+    return {m.group(1).split(":")[-1] if m.group(1).count(":") and m.group(1).split(":")[0] not in ("xmlns",) else m.group(1): (m.group(3) if m.group(3) is not None else m.group(4)) for m in _ATTR.finditer(s)}
+
+
+def _ix_num(text, a):
+    t = _TAG.sub("", text or "").strip().replace("&nbsp;", "").replace(" ", "")
+    fmt = (a.get("format") or "").lower()
+    if t in ("", "-", "–", "—") or "zero" in fmt or "dash" in fmt:
+        v = 0.0
+    else:
+        if "comma-decimal" in fmt or "numcommadecimal" in fmt:
+            t = t.replace(".", "").replace(",", ".")
+        else:
+            t = t.replace(",", "")
+        v = _num(t)
+        if v is None:
+            return None
+    try:
+        v *= 10 ** int(a.get("scale") or 0)
+    except ValueError:
+        pass
+    if a.get("sign") == "-":
+        v = -v
+    return v
+
+
+def _parse_inline(raw):
+    """Inline XBRL (HTML) → same structure as a plain instance document."""
+    txt = raw.decode("utf-8", "replace")
+    contexts = {}
+    for m in re.finditer(r"<(?:\w+:)?context\b([^>]*)>(.*?)</(?:\w+:)?context>", txt, re.S | re.I):
+        a = _attrs(m.group(1))
+        body = m.group(2)
+        g = lambda tag: (re.search(r"<(?:\w+:)?%s\b[^>]*>\s*([^<]+?)\s*<" % tag, body, re.I) or [None, None])[1]  # noqa: E731
+        start, end, inst = _date(g("startDate")), _date(g("endDate")), _date(g("instant"))
+        dims = bool(re.search(r"explicitMember|typedMember", body, re.I))
+        contexts[a.get("id")] = {"start": start, "end": end or inst, "instant": inst is not None, "dims": dims}
+    units = {}
+    for m in re.finditer(r"<(?:\w+:)?unit\b([^>]*)>(.*?)</(?:\w+:)?unit>", txt, re.S | re.I):
+        meas = re.findall(r"<(?:\w+:)?measure[^>]*>\s*([^<]+?)\s*<", m.group(2), re.I)
+        units[_attrs(m.group(1)).get("id")] = (meas[-1] if meas else "").split(":")[-1].lower()
+    raw_facts, text_facts = [], []
+    for m in re.finditer(r"<ix:nonFraction\b([^>]*)>(.*?)</ix:nonFraction>", txt, re.S | re.I):
+        a = _attrs(m.group(1))
+        name = (re.search(r'\bname\s*=\s*"([^"]+)"', m.group(1)) or [None, ""])[1].split(":")[-1]
+        v = _ix_num(m.group(2), a)
+        if name and v is not None:
+            raw_facts.append((name, a.get("contextRef"), v, a.get("unitRef")))
+    for m in re.finditer(r"<ix:nonNumeric\b([^>]*)>(.*?)</ix:nonNumeric>", txt, re.S | re.I):
+        name = (re.search(r'\bname\s*=\s*"([^"]+)"', m.group(1)) or [None, ""])[1].split(":")[-1]
+        text_facts.append((name, _TAG.sub("", m.group(2)).strip()[:300]))
+    return contexts, units, raw_facts, text_facts
+
+
 def parse(raw):
     """Return {'period_end', 'period_start', 'facts': {name: value}, 'text': {...},
     'units': {name: unit}, 'contexts': n}."""
+    head = raw[:4000].lower()
+    if b"<html" in head or b"ix:header" in raw[:200000].lower() or b"nonfraction" in raw[:400000].lower():
+        contexts, units, raw_facts, text_facts = _parse_inline(raw)
+        return _finish(contexts, units, raw_facts, text_facts, numeric=True)
     root = ET.fromstring(raw)
     contexts = {}
     for el in root.iter():
@@ -69,6 +131,11 @@ def parse(raw):
         if not ref or ref not in contexts:
             continue
         raw_facts.append((_local(el.tag), ref, el.text, el.get("unitRef")))
+    return _finish(contexts, units, raw_facts, [], numeric=False)
+
+
+def _finish(contexts, units, raw_facts, text_facts, numeric):
+    raw_facts = [f for f in raw_facts if f[1] in contexts]
 
     # Current reporting period: latest end date among ~quarterly durations.
     quarter_ctx = [c for c in contexts.values()
@@ -91,10 +158,13 @@ def parse(raw):
         return 2  # year-to-date etc.
 
     facts, text, unit_of, best = {}, {}, {}, {}
+    for name, val in text_facts:
+        if name and val and name not in text:
+            text[name] = val
     for name, ref, val, uref in raw_facts:
         c = contexts[ref]
         r = rank(c)
-        v = _num(val)
+        v = val if numeric else _num(val)
         if v is None:
             if val and val.strip() and name not in text:
                 text[name] = val.strip()[:300]
