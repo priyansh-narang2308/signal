@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SIGNAL — Round 1 Solution Brief</title>
+<style>
+@font-face { font-family: "Inter"; src: url("../../prototype/assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+@font-face { font-family: "Inter"; src: url("../../prototype/assets/fonts/inter-latin-500-normal.woff2"); font-weight: 500; }
+@font-face { font-family: "Inter"; src: url("../../prototype/assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+@font-face { font-family: "Inter"; src: url("../../prototype/assets/fonts/inter-latin-700-normal.woff2"); font-weight: 700; }
+@font-face { font-family: "Serif"; src: url("../../prototype/assets/fonts/source-serif-4-latin-400-normal.woff2"); font-weight: 400; }
+@font-face { font-family: "Serif"; src: url("../../prototype/assets/fonts/source-serif-4-latin-600-normal.woff2"); font-weight: 600; }
+@font-face { font-family: "Serif"; src: url("../../prototype/assets/fonts/source-serif-4-latin-400-italic.woff2"); font-style: italic; }
+@font-face { font-family: "Mono"; src: url("../../prototype/assets/fonts/jetbrains-mono-latin-400-normal.woff2"); font-weight: 400; }
+@font-face { font-family: "Mono"; src: url("../../prototype/assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+@font-face { font-family: "Mono"; src: url("../../prototype/assets/fonts/jetbrains-mono-latin-600-normal.woff2"); font-weight: 600; }
+
+@page { size: A4; margin: 0; }
+:root { --ink:#0a0a0b; --ink2:#2e2e31; --ink3:#5f5f65; --ink4:#8e8e94; --rule:#e4e4e7; --rule2:#d0d0d5; --p2:#f6f6f7; --p3:#ededef; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; color: var(--ink); }
+body { font-family: "Inter", sans-serif; font-size: 8.5pt; line-height: 1.48; -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1; }
+.page { width: 210mm; height: 297mm; padding: 12mm 14mm 10mm; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; }
+.page:last-child { page-break-after: auto; }
+b { font-weight: 600; }
+
+/* header */
+.meta { display: flex; justify-content: space-between; font-family: "Mono"; font-size: 6.6pt; letter-spacing: .09em; color: var(--ink3); padding-bottom: 6px; border-bottom: 1px solid var(--ink); }
+.meta b { color: var(--ink); }
+.brand { display: flex; align-items: center; gap: 9px; margin-top: 13px; }
+.brand svg { width: 15px; height: 15px; }
+.brand .w { font-weight: 700; font-size: 11pt; letter-spacing: .26em; }
+.brand .s { font-size: 8.5pt; color: var(--ink3); padding-left: 9px; border-left: 1px solid var(--rule2); }
+.brand .pg { margin-left: auto; font-family: "Mono"; font-size: 6.8pt; color: var(--ink4); letter-spacing: .08em; }
+
+.demo { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-family: "Mono"; font-size: 6.8pt; font-weight: 600; letter-spacing: .1em; color: #fff; background: var(--ink); padding: 4px 9px 4px 8px; text-decoration: none; }
+.demo::before { content: ""; width: 0; height: 0; border-left: 6px solid #fff; border-top: 3.5px solid transparent; border-bottom: 3.5px solid transparent; }
+.brand .demo + .pg { margin-left: 12px; }
+/* hero */
+.hero { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: end; }
+.hero h1 { font-family: "Serif"; font-weight: 400; font-size: 40pt; line-height: .98; letter-spacing: -.022em; }
+.hero p { font-size: 10pt; line-height: 1.5; color: var(--ink2); padding-bottom: 4px; }
+.hero p em { font-family: "Serif"; font-style: italic; color: var(--ink); font-size: 10.6pt; }
+
+/* sections */
+.sec { margin-top: 21px; }
+.sh { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--ink); padding-bottom: 5px; margin-bottom: 11px; }
+.sh h2 { font-family: "Mono"; font-size: 7.6pt; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.sh h2 i { font-style: normal; color: var(--ink4); margin-right: 8px; }
+.sh span { font-size: 7.4pt; color: var(--ink4); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.lab { font-family: "Mono"; font-size: 6.8pt; letter-spacing: .09em; text-transform: uppercase; color: var(--ink4); }
+
+/* problem */
+.thesis { font-family: "Serif"; font-size: 12.5pt; line-height: 1.3; letter-spacing: -.006em; }
+.fails { margin-top: 12px; }
+.fails div { display: grid; grid-template-columns: 82px 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid var(--rule); }
+.fails .k { font-family: "Mono"; font-size: 6.9pt; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); padding-top: 1.5px; }
+
+/* mechanism */
+.mech { border: 1px solid var(--rule2); }
+.mech .x { display: grid; grid-template-columns: 76px 1fr 60px; gap: 10px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--rule); }
+.mech .nm { font-family: "Mono"; font-size: 8.6pt; font-weight: 600; letter-spacing: .18em; }
+.mech .q { font-size: 8pt; color: var(--ink2); line-height: 1.35; }
+.mech svg { width: 60px; height: 18px; display: block; }
+.mech .eq { display: grid; grid-template-columns: 1fr auto 1fr auto 1.1fr; background: var(--p2); }
+.mech .eq > div { padding: 9px 11px; font-size: 7.8pt; line-height: 1.32; }
+.mech .eq .op { font-family: "Mono"; color: var(--ink3); align-self: center; padding: 0 2px; font-size: 10pt; }
+.mech .eq .br { background: var(--ink); color: #fff; }
+.mech .eq .br .lab { color: #a9a9ae; }
+
+/* gates */
+.gates { display: grid; grid-template-columns: repeat(6, 1fr); }
+.gates > div { padding: 0 12px 0 0; }
+.gates > div + div { padding-left: 12px; border-left: 1px solid var(--rule); }
+.gates .n { font-family: "Mono"; font-size: 6.6pt; color: var(--ink4); }
+.gates .g { font-size: 8.6pt; font-weight: 600; line-height: 1.25; margin-top: 3px; }
+.gates .d { font-size: 7.4pt; color: var(--ink3); margin-top: 4px; line-height: 1.35; }
+
+/* figures */
+figure .frame { border: 1px solid var(--rule2); }
+figure img { width: 100%; display: block; }
+figcaption { display: flex; justify-content: space-between; font-family: "Mono"; font-size: 6.4pt; color: var(--ink4); margin-top: 6px; letter-spacing: .03em; }
+
+/* three points */
+.pts { display: grid; grid-template-columns: repeat(3, 1fr); }
+.pts > div { padding-right: 16px; }
+.pts > div + div { padding-left: 16px; border-left: 1px solid var(--rule); }
+.pts .t { font-size: 9.2pt; font-weight: 600; }
+.pts .d { font-size: 7.9pt; color: var(--ink3); margin-top: 4px; line-height: 1.42; }
+
+.foot { margin-top: auto; padding-top: 7px; border-top: 1px solid var(--rule2); display: flex; justify-content: space-between; gap: 20px; font-family: "Mono"; font-size: 6.3pt; color: var(--ink4); letter-spacing: .03em; }
+
+/* page 2 — workflow */
+.flow { display: grid; grid-template-columns: repeat(8, 1fr); border: 1px solid var(--rule2); }
+.flow > div { padding: 8px 9px 9px; border-right: 1px solid var(--rule); }
+.flow > div:last-child { border-right: 0; background: var(--ink); color: #fff; }
+.flow .n { font-family: "Mono"; font-size: 6.4pt; color: var(--ink4); }
+.flow > div:last-child .n { color: #9a9aa0; }
+.flow .t { font-family: "Mono"; font-size: 7.4pt; font-weight: 600; letter-spacing: .08em; margin-top: 2px; }
+.flow .d { font-size: 7.1pt; color: var(--ink3); margin-top: 3px; line-height: 1.3; }
+.flow > div:last-child .d { color: #c9c9ce; }
+.flow-note { display: flex; gap: 18px; margin-top: 8px; font-size: 7.5pt; color: var(--ink3); }
+.flow-note b { color: var(--ink); }
+
+/* funnel */
+.fr { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: center; padding: 4px 0; }
+.fc { font-family: "Mono"; font-size: 15pt; font-weight: 500; text-align: right; letter-spacing: -.03em; line-height: 1; }
+.fb { height: 9px; background: var(--p3); position: relative; }
+.fb i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); }
+.fl { display: flex; justify-content: space-between; font-size: 7.8pt; margin-top: 3px; }
+.fl span:last-child { font-family: "Mono"; font-size: 6.5pt; color: var(--ink4); }
+.fnote { font-size: 7.6pt; color: var(--ink3); margin-top: 10px; line-height: 1.42; }
+
+/* tests */
+.tests div { display: grid; grid-template-columns: 26px 118px 1fr; gap: 6px; padding: 4.6px 0; border-bottom: 1px solid var(--rule); font-size: 7.9pt; line-height: 1.3; }
+.tests .id { font-family: "Mono"; font-size: 6.6pt; color: var(--ink4); padding-top: 1px; }
+.tests .n { font-weight: 600; }
+.tests .p { color: var(--ink3); }
+.verdict { margin-top: 9px; font-size: 7.6pt; color: var(--ink3); line-height: 1.42; }
+.verdict b { color: var(--ink); }
+
+/* evidence chain */
+.chain { border: 1px solid var(--rule2); }
+.chain .cs { display: grid; grid-template-columns: 62px 1fr; gap: 10px; padding: 8px 11px; border-bottom: 1px solid var(--rule); align-items: start; }
+.chain .cs:last-child { border-bottom: 0; }
+.chain .cl { font-family: "Mono"; font-size: 6.6pt; letter-spacing: .08em; text-transform: uppercase; color: var(--ink4); padding-top: 2px; }
+.chain .cv { font-family: "Mono"; font-size: 7.3pt; line-height: 1.5; }
+.chain .big { font-family: "Mono"; font-size: 14pt; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+.chain .sub { font-size: 7.4pt; color: var(--ink3); margin-top: 2px; }
+.chain .doc { font-family: "Serif"; padding: 5px 8px; font-size: 7.8pt; display: flex; justify-content: space-between; background: #ececee; outline: 1px solid var(--ink); outline-offset: -1px; font-weight: 600; }
+
+/* generalization */
+.arch { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule2); }
+.arch > div { padding: 7px 11px; border-bottom: 1px solid var(--rule); font-size: 7.6pt; color: var(--ink3); line-height: 1.35; }
+.arch > div:nth-child(odd) { border-right: 1px solid var(--rule); }
+.arch > div:nth-last-child(-n+2) { border-bottom: 0; }
+.arch b { display: block; color: var(--ink); font-family: "Mono"; font-size: 7pt; letter-spacing: .09em; margin-bottom: 1px; }
+.sets { margin-top: 9px; font-size: 7.6pt; color: var(--ink2); line-height: 1.45; }
+.plan div { display: grid; grid-template-columns: 62px 1fr; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--rule); font-size: 7.9pt; }
+.plan .dt { font-family: "Mono"; font-size: 7pt; font-weight: 500; padding-top: 1px; }
+</style>
+</head>
+<body>
+
+<!-- =============================== PAGE 1 =============================== -->
+<section class="page">
+  <div class="meta"><span><b>ROUND 1 · SOLUTION BRIEF</b></span><span>TRACK A — BANKING, NBFCs &amp; FINANCIAL SERVICES</span><span class="team">THE BLACKLISTED</span></div>
+  <div class="brand">
+    <svg viewBox="0 0 18 18"><rect x=".75" y=".75" width="16.5" height="16.5" fill="none" stroke="#0a0a0b" stroke-width="1.5"/><line x1="3.5" y1="11.5" x2="8.2" y2="11.5" stroke="#0a0a0b" stroke-width="1.5"/><line x1="9.8" y1="6.5" x2="14.5" y2="6.5" stroke="#0a0a0b" stroke-width="1.5"/><line x1="9" y1="4" x2="9" y2="14" stroke="#0a0a0b" stroke-width="1" stroke-dasharray="1.5 1.5"/></svg>
+    <span class="w">SIGNAL</span><span class="s">Autonomous Financial Research</span><a class="demo" href="https://drive.google.com/file/d/1C6xVF_OhqpW1fH_TZGpT5-i4ZC6zlrme/view?usp=sharing">WATCH THE 2-MIN DEMO</a><span class="pg">01 / 02</span>
+  </div>
+
+  <div class="hero">
+    <h1>Computed,<br>not retrieved.</h1>
+    <p>SIGNAL finds where a company's numbers <b>persistently break three expectations</b> — its own history, its peers, and what its management said — and reports a finding only after it <b>survives a pre-registered attempt to disprove it</b>. <em>Find the breach. Trace the evidence. Try to break the hypothesis.</em></p>
+  </div>
+
+  <div class="sec two">
+    <div>
+      <div class="sh"><h2><i>01</i>The problem</h2></div>
+      <p class="thesis">A non-obvious finding is, almost by definition, not written down anywhere. Retrieval can only return what someone has already said.</p>
+      <div class="fails">
+        <div><span class="k">Dashboards</span><span>show headline ratios — not the drivers underneath them.</span></div>
+        <div><span class="k">Summarisers</span><span>repeat the narrative; a “critic” prompt argues, it does not test.</span></div>
+        <div><span class="k">SIGNAL</span><span>computes where <b>history ≠ peers ≠ narrative</b>, then tries to explain it away.</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="sh"><h2><i>02</i>The mechanism</h2><span>three expectations</span></div>
+      <div class="mech">
+        <div class="x"><span class="nm">SELF</span><span class="q">What its own history predicts</span>
+          <svg viewBox="0 0 72 20"><rect x="1" y="9" width="70" height="6" fill="#0a0a0b" fill-opacity=".06" stroke="#9c9ca1" stroke-dasharray="2 2" stroke-width=".7"/><polyline points="2,12 14,11.5 26,12 36,11.6 47,8 58,5 70,2" fill="none" stroke="#0a0a0b" stroke-width="1.4"/></svg></div>
+        <div class="x"><span class="nm">PEER</span><span class="q">What comparable firms show, same quarters</span>
+          <svg viewBox="0 0 72 20"><polyline points="2,13 70,13" stroke="#c9c9ce" stroke-width=".8"/><polyline points="2,15.5 70,16" stroke="#c9c9ce" stroke-width=".8"/><polyline points="2,11 70,10.5" stroke="#c9c9ce" stroke-width=".8"/><polyline points="2,13 70,12.6" stroke="#5f5f65" stroke-dasharray="2 1.5" stroke-width=".9"/><polyline points="2,13 36,12.6 47,9 58,6 70,3" fill="none" stroke="#0a0a0b" stroke-width="1.4"/></svg></div>
+        <div class="x"><span class="nm">NARRATIVE</span><span class="q">What management said drives results</span>
+          <svg viewBox="0 0 72 20"><line x1="1" y1="10" x2="71" y2="10" stroke="#0a0a0b" stroke-dasharray="3 2" stroke-width=".8"/><rect x="28" y="7" width="7" height="12" fill="#0a0a0b"/><rect x="39" y="5" width="7" height="14" fill="#0a0a0b"/><rect x="50" y="4" width="7" height="15" fill="#0a0a0b"/><rect x="61" y="2" width="7" height="17" fill="#0a0a0b"/></svg></div>
+        <div class="eq">
+          <div><span class="lab">Expected</span><br>history, peers, claims</div>
+          <span class="op">vs</span>
+          <div><span class="lab">Observed</span><br>reconciled primary filings</div>
+          <span class="op">=</span>
+          <div class="br"><span class="lab">Breach</span><br>a candidate, not yet a discovery</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><h2><i>03</i>From candidate to discovery</h2><span>every gate must pass</span></div>
+    <div class="gates">
+      <div><div class="n">G1</div><div class="g">Reconciled</div><div class="d">Numbers satisfy accounting identities</div></div>
+      <div><div class="n">G2</div><div class="g">Corroborated</div><div class="d">≥2 independent source families</div></div>
+      <div><div class="n">G3</div><div class="g">Specific</div><div class="d">Not explained by peers</div></div>
+      <div><div class="n">G4</div><div class="g">Survives tests</div><div class="d">9 alternative explanations</div></div>
+      <div><div class="n">G5</div><div class="g">Predicts</div><div class="d">A consequence it wasn't built from</div></div>
+      <div><div class="n">G6</div><div class="g">Persistent</div><div class="d">Holds across time windows</div></div>
+    </div>
+  </div>
+
+  <figure class="sec">
+    <div class="frame"><img src="../crops/crop-expectations.png" alt="SIGNAL prototype: three expectations"></div>
+    <figcaption><span>Prototype · the three expectations behind one discovery</span><span>Illustrative prototype data · synthetic panel</span></figcaption>
+  </figure>
+
+  <div class="sec">
+    <div class="sh"><h2><i>04</i>Why it is different</h2></div>
+    <div class="pts">
+      <div><div class="t">No LLM-typed numbers</div><div class="d">Every figure is a computed value traced to a page and passage. The model only reads text and writes prose.</div></div>
+      <div><div class="t">Independent evidence</div><div class="d">Company, peers, regulator, rating agency. Three news copies of one press release count once.</div></div>
+      <div><div class="t">Tested, not argued</div><div class="d">Each counter-explanation is code over data, registered before the results are seen.</div></div>
+    </div>
+  </div>
+
+  <div class="foot"><span>ATMOS 2026 · BITS Pilani, Hyderabad</span><span>Prototype on simulated data — not findings about any company</span></div>
+</section>
+
+<!-- =============================== PAGE 2 =============================== -->
+<section class="page">
+  <div class="meta"><span><b>HOW SIGNAL RESEARCHES</b></span><span>ANY LISTED TRACK A COMPANY · NO COMPANY-SPECIFIC TUNING</span><span class="team">THE BLACKLISTED</span></div>
+  <div class="brand">
+    <svg viewBox="0 0 18 18"><rect x=".75" y=".75" width="16.5" height="16.5" fill="none" stroke="#0a0a0b" stroke-width="1.5"/><line x1="3.5" y1="11.5" x2="8.2" y2="11.5" stroke="#0a0a0b" stroke-width="1.5"/><line x1="9.8" y1="6.5" x2="14.5" y2="6.5" stroke="#0a0a0b" stroke-width="1.5"/><line x1="9" y1="4" x2="9" y2="14" stroke="#0a0a0b" stroke-width="1" stroke-dasharray="1.5 1.5"/></svg>
+    <span class="w">SIGNAL</span><span class="s">Company in → auditable discovery out</span><a class="demo" href="https://drive.google.com/file/d/1C6xVF_OhqpW1fH_TZGpT5-i4ZC6zlrme/view?usp=sharing">WATCH THE 2-MIN DEMO</a><span class="pg">02 / 02</span>
+  </div>
+
+  <div class="sec" style="margin-top:16px">
+    <div class="sh"><h2><i>05</i>Research workflow</h2><span>target 5–7 minutes live</span></div>
+    <div class="flow">
+      <div><div class="n">01</div><div class="t">INGEST</div><div class="d">Filings, transcripts, RBI, ratings</div></div>
+      <div><div class="n">02</div><div class="t">NORMALIZE</div><div class="d">Typed facts, reconciled</div></div>
+      <div><div class="n">03</div><div class="t">EXPECT</div><div class="d">History, peers, claims</div></div>
+      <div><div class="n">04</div><div class="t">BREACH</div><div class="d">Persistent surprise</div></div>
+      <div><div class="n">05</div><div class="t">TRIANGULATE</div><div class="d">Independent families</div></div>
+      <div><div class="n">06</div><div class="t">FALSIFY</div><div class="d">9 tests + corollaries</div></div>
+      <div><div class="n">07</div><div class="t">RANK</div><div class="d">Gates + strength rule</div></div>
+      <div><div class="n">08</div><div class="t">DISCOVER</div><div class="d">8 required elements</div></div>
+    </div>
+    <div class="flow-note"><span><b>Code decides</b> — checks, statistics, tests, every number.</span><span><b>The LLM reads and writes</b> — claims, mechanisms, digit-free prose.</span></div>
+  </div>
+
+  <div class="sec two">
+    <div>
+      <div class="sh"><h2><i>06</i>Discovery funnel</h2><span>nothing hand-picked</span></div>
+      <div class="fr"><span class="fc">143</span><div><div class="fb"><i style="width:100%"></i></div><div class="fl"><span>Candidate breaches</span><span>all drivers</span></div></div></div>
+      <div class="fr"><span class="fc">31</span><div><div class="fb"><i style="width:46.6%"></i></div><div class="fl"><span>Structurally valid</span><span>reconciled, persistent</span></div></div></div>
+      <div class="fr"><span class="fc">11</span><div><div class="fb"><i style="width:27.7%"></i></div><div class="fl"><span>Corroborated</span><span>≥2 families</span></div></div></div>
+      <div class="fr"><span class="fc">4</span><div><div class="fb"><i style="width:16.7%"></i></div><div class="fl"><span>Company-specific</span><span>vs peers</span></div></div></div>
+      <div class="fr"><span class="fc">2</span><div><div class="fb"><i style="width:11.8%"></i></div><div class="fl"><span>Survived falsification</span><span>9 tests</span></div></div></div>
+      <div class="fr"><span class="fc">1</span><div><div class="fb"><i style="width:8.4%"></i></div><div class="fl"><span><b>Discovery</b></span><span>strength: strong</span></div></div></div>
+      <p class="fnote">Every rejection is shown with its reason. <span class="lab" style="font-size:6.2pt">Illustrative counts</span></p>
+    </div>
+    <div>
+      <div class="sh"><h2><i>07</i>Try to break the discovery</h2><span>pre-registered</span></div>
+      <div class="tests">
+        <div><span class="id">AE1</span><span class="n">Sector-wide effect</span><span class="p">company vs same-quarter peers</span></div>
+        <div><span class="id">AE2</span><span class="n">Regulatory / macro</span><span class="p">difference around dated events</span></div>
+        <div><span class="id">AE3</span><span class="n">Accounting artefact</span><span class="p">policy, merger, restatement</span></div>
+        <div><span class="id">AE4</span><span class="n">Denominator effect</span><span class="p">lagged ratios</span></div>
+        <div><span class="id">AE5</span><span class="n">One-off / window</span><span class="p">specification curve</span></div>
+        <div><span class="id">AE6</span><span class="n">Already disclosed</span><span class="p">claims + press coverage</span></div>
+        <div><span class="id">AE7</span><span class="n">Data error</span><span class="p">second-document check</span></div>
+        <div><span class="id">AE8</span><span class="n">Other mechanism</span><span class="p">predictions on unused data</span></div>
+        <div><span class="id">AE9</span><span class="n">Counter-evidence</span><span class="p">bounded independent search</span></div>
+      </div>
+      <p class="verdict">The strongest surviving alternative becomes the <b>counterargument</b>; strength is a <b>deterministic rule</b>, not an LLM opinion.</p>
+    </div>
+  </div>
+
+  <figure class="sec">
+    <div class="frame"><img src="../crops/crop-disc-head.png" alt="SIGNAL prototype: discovery"></div>
+    <figcaption><span>Prototype · every underlined claim opens its evidence trail</span><span>Illustrative output · not a finding about any company</span></figcaption>
+  </figure>
+
+  <div class="sec two">
+    <div>
+      <div class="sh"><h2><i>08</i>Every number, traceable</h2></div>
+      <div class="chain">
+        <div class="cs"><div class="cl">Value</div><div><div class="big">+₹14,953 cr</div><div class="sub">fresh slippages, six quarters</div></div></div>
+        <div class="cs"><div class="cl">Formula</div><div class="cv">open + slippages − upgrades<br>− recoveries − write-offs = close  ✓</div></div>
+        <div class="cs"><div class="cl">Source</div><div class="cv">Quarterly results · notes · p. 37</div></div>
+        <div class="cs"><div class="cl">Passage</div><div class="doc"><span>Additions — fresh slippages</span><span>3,266</span></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sh"><h2><i>09</i>Generalization</h2><span>archetype, not company</span></div>
+      <div class="arch">
+        <div><b>BANKS</b>NPA flows, deposits, capital</div>
+        <div><b>NBFCs</b>AUM, funding mix, Stage 2</div>
+        <div><b>INSURERS</b>APE mix, margins</div>
+        <div><b>INFRA · HOLDCOS</b>generic identities</div>
+      </div>
+      <p class="sets">Benchmarked on <b>held-out NIFTY</b> and <b>non-NIFTY</b> companies, plus <b>as-of backtests</b>.</p>
+      <div class="sh" style="margin-top:12px"><h2><i>10</i>Build plan</h2><span>now: prototype</span></div>
+      <div class="plan">
+        <div><span class="dt">08–15 Oct</span><span>Ingestion, reconciliation, expectation panels</span></div>
+        <div><span class="dt">14–19 Oct</span><span>Falsification, provenance, live dashboard</span></div>
+        <div><span class="dt">19–25 Oct</span><span>Benchmark, hardening, live rehearsals</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Public data only: NSE/BSE filings, RBI, rating rationales · Python · DuckDB · LLM at temp 0</span><span>Figures simulated</span></div>
+</section>
+
+<script>
+  const t = new URLSearchParams(location.search).get("team");
+  if (t) document.querySelectorAll(".team").forEach((e) => (e.textContent = t.toUpperCase()));
+</script>
+</body>
+</html>
