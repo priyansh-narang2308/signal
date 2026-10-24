@@ -1,365 +1,704 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIGNAL — Autonomous Financial Research</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 18 18%22%3E%3Crect x=%22.75%22 y=%22.75%22 width=%2216.5%22 height=%2216.5%22 fill=%22white%22 stroke=%22black%22 stroke-width=%221.5%22/%3E%3Cpath d=%22M3.5 11.5h4.7M9.8 6.5h4.7%22 stroke=%22black%22 stroke-width=%221.5%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SIGNAL — Autonomous Financial Research</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 18 18%22%3E%3Crect x=%22.75%22 y=%22.75%22 width=%2216.5%22 height=%2216.5%22 fill=%22white%22 stroke=%22black%22 stroke-width=%221.5%22/%3E%3Cpath d=%22M3.5 11.5h4.7M9.8 6.5h4.7%22 stroke=%22black%22 stroke-width=%221.5%22/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 18 18" aria-hidden="true">
+          <rect
+            x="0.75"
+            y="0.75"
+            width="16.5"
+            height="16.5"
+            fill="none"
+            stroke="#0a0a0b"
+            stroke-width="1.5"
+          />
+          <line
+            x1="3.5"
+            y1="11.5"
+            x2="8.2"
+            y2="11.5"
+            stroke="#0a0a0b"
+            stroke-width="1.5"
+          />
+          <line
+            x1="9.8"
+            y1="6.5"
+            x2="14.5"
+            y2="6.5"
+            stroke="#0a0a0b"
+            stroke-width="1.5"
+          />
+          <line
+            x1="9"
+            y1="4"
+            x2="9"
+            y2="14"
+            stroke="#0a0a0b"
+            stroke-width="1"
+            stroke-dasharray="1.5 1.5"
+          />
+        </svg>
+        <span class="wordmark">SIGNAL</span>
+        <span class="brand-sub">Autonomous Financial Research</span>
+      </div>
+      <nav class="nav">
+        <a href="#/research" data-nav="research">Research</a>
+        <a href="#/discovery" data-nav="discoveries">Discoveries</a>
+        <a href="#/evidence" data-nav="evidence">Evidence</a>
+        <a href="#/methodology" data-nav="methodology">Methodology</a>
+      </nav>
+      <div class="top-right">
+        <span class="chip">Prototype · simulation</span>
+        <span><i class="track-dot"></i>Track A · Financial Services</span>
+      </div>
+    </header>
 
-<header class="topbar">
-  <div class="brand">
-    <svg class="brand-mark" viewBox="0 0 18 18" aria-hidden="true">
-      <rect x="0.75" y="0.75" width="16.5" height="16.5" fill="none" stroke="#0a0a0b" stroke-width="1.5"/>
-      <line x1="3.5" y1="11.5" x2="8.2" y2="11.5" stroke="#0a0a0b" stroke-width="1.5"/>
-      <line x1="9.8" y1="6.5" x2="14.5" y2="6.5" stroke="#0a0a0b" stroke-width="1.5"/>
-      <line x1="9" y1="4" x2="9" y2="14" stroke="#0a0a0b" stroke-width="1" stroke-dasharray="1.5 1.5"/>
-    </svg>
-    <span class="wordmark">SIGNAL</span>
-    <span class="brand-sub">Autonomous Financial Research</span>
-  </div>
-  <nav class="nav">
-    <a href="#/research" data-nav="research">Research</a>
-    <a href="#/discovery" data-nav="discoveries">Discoveries</a>
-    <a href="#/evidence" data-nav="evidence">Evidence</a>
-    <a href="#/methodology" data-nav="methodology">Methodology</a>
-  </nav>
-  <div class="top-right">
-    <span class="chip">Prototype · simulation</span>
-    <span><i class="track-dot"></i>Track A · Financial Services</span>
-  </div>
-</header>
+    <div class="contextbar hidden" id="contextbar">
+      <span class="ctx"
+        ><strong>HDFC Bank</strong
+        ><span class="mono small">NSE: HDFCBANK</span></span
+      >
+      <span class="ctx">Archetype · Bank</span>
+      <span class="ctx mono small">Q1 FY22 → Q1 FY27</span>
+      <span class="ctx">8-peer panel</span>
+      <span class="ctx mono small">Run 0142</span>
+      <span class="spacer"></span>
+      <span class="ctx mono small">Simulated data · output structure only</span>
+    </div>
 
-<div class="contextbar hidden" id="contextbar">
-  <span class="ctx"><strong>HDFC Bank</strong><span class="mono small">NSE: HDFCBANK</span></span>
-  <span class="ctx">Archetype · Bank</span>
-  <span class="ctx mono small">Q1 FY22 → Q1 FY27</span>
-  <span class="ctx">8-peer panel</span>
-  <span class="ctx mono small">Run 0142</span>
-  <span class="spacer"></span>
-  <span class="ctx mono small">Simulated data · output structure only</span>
-</div>
+    <main>
+      <!-- ================= RESEARCH ================= -->
+      <section class="view" id="view-research">
+        <div class="research-grid">
+          <div class="research-hero">
+            <div class="eyebrow">New research run</div>
+            <h1>
+              Find the breach. Trace the evidence. Try to break the hypothesis.
+            </h1>
+            <p class="lede">
+              SIGNAL builds what a company's history, its peers and its
+              management lead us to expect — then investigates where the numbers
+              persistently disagree, and reports only what survives
+              falsification.
+            </p>
 
-<main>
+            <div class="runform">
+              <div class="field">
+                <span class="label">Company</span>
+                <div>
+                  <div class="company-input value big">
+                    <span id="companyText">HDFC Bank</span><i class="caret"></i>
+                  </div>
+                  <div class="company-meta" id="companyMeta">
+                    NSE: HDFCBANK · archetype detected: Bank · NIFTY 50
+                  </div>
+                </div>
+                <span class="meta">Any listed<br />Track A company</span>
+              </div>
+              <div class="field">
+                <span class="label">Period</span>
+                <span class="value num">Q1 FY22 → Q1 FY27</span>
+                <span class="meta">21 quarters · latest reported</span>
+              </div>
+              <div class="field">
+                <span class="label">Peer panel</span>
+                <span class="value"
+                  >8 banks · same archetype · size-ranked</span
+                >
+                <span class="meta">incl. non-NIFTY</span>
+              </div>
+              <div class="field">
+                <span class="label">Output</span>
+                <span class="value"
+                  >Discovery dossier · 8 required elements · full
+                  provenance</span
+                >
+                <span class="meta">no recommendation</span>
+              </div>
+              <div class="runbar">
+                <span class="hint"
+                  >Live target: 5–7 min · this prototype replays a simulated
+                  run</span
+                >
+                <button class="btn-run" id="runBtn">
+                  RUN RESEARCH <span class="arrow">→</span>
+                </button>
+              </div>
+            </div>
 
-<!-- ================= RESEARCH ================= -->
-<section class="view" id="view-research">
-  <div class="research-grid">
-    <div class="research-hero">
-      <div class="eyebrow">New research run</div>
-      <h1>Find the breach. Trace the evidence. Try to break the hypothesis.</h1>
-      <p class="lede">SIGNAL builds what a company's history, its peers and its management lead us to expect — then investigates where the numbers persistently disagree, and reports only what survives falsification.</p>
-
-      <div class="runform">
-        <div class="field">
-          <span class="label">Company</span>
-          <div>
-            <div class="company-input value big"><span id="companyText">HDFC Bank</span><i class="caret"></i></div>
-            <div class="company-meta" id="companyMeta">NSE: HDFCBANK · archetype detected: Bank · NIFTY 50</div>
+            <div class="status">
+              <div class="status-item">
+                <div class="k">
+                  <span class="dot"></span>Ready to investigate
+                </div>
+                <div class="v">no company tuning</div>
+              </div>
+              <div class="status-item">
+                <div class="k"><span class="dot"></span>8-peer panel</div>
+                <div class="v">same archetype</div>
+              </div>
+              <div class="status-item">
+                <div class="k"><span class="dot"></span>5-year history</div>
+                <div class="v">bitemporal facts</div>
+              </div>
+              <div class="status-item">
+                <div class="k">
+                  <span class="dot"></span>Primary-source evidence
+                </div>
+                <div class="v">filings · regulator</div>
+              </div>
+              <div class="status-item">
+                <div class="k">
+                  <span class="dot"></span>Falsification enabled
+                </div>
+                <div class="v">9 pre-registered tests</div>
+              </div>
+            </div>
           </div>
-          <span class="meta">Any listed<br>Track A company</span>
+
+          <aside class="howrun">
+            <div class="eyebrow">What a run does</div>
+            <div class="stage-list" id="stageList"></div>
+            <div class="principle">
+              <div class="eyebrow">Principle</div>
+              <div class="big">Computed, not retrieved.</div>
+              <p>
+                A non-obvious finding is not written down anywhere — retrieval
+                can only return what someone has already said. SIGNAL computes
+                it across documents, then tries to explain it away.
+              </p>
+            </div>
+          </aside>
         </div>
-        <div class="field">
-          <span class="label">Period</span>
-          <span class="value num">Q1 FY22 → Q1 FY27</span>
-          <span class="meta">21 quarters · latest reported</span>
+      </section>
+
+      <!-- ================= RUN ================= -->
+      <section class="view" id="view-run">
+        <div class="rail" id="rail"></div>
+        <div class="run-grid">
+          <div class="run-col">
+            <div class="run-col-head">
+              <span class="eyebrow dark">Research log</span
+              ><span class="label" id="runClock">00:00</span>
+            </div>
+            <div class="log" id="log"></div>
+          </div>
+          <div class="run-col">
+            <div class="run-col-head">
+              <span class="eyebrow dark">Discovery funnel</span
+              ><span class="label"
+                >every candidate is tested · none hand-picked</span
+              >
+            </div>
+            <div class="funnel" id="funnel"></div>
+            <div class="funnel-foot">
+              <span
+                >Gates are fixed before the run. Every rejection is logged with
+                its reason.</span
+              ><span class="mono small" id="funnelFoot">143 → 1</span>
+            </div>
+          </div>
+          <div class="run-col">
+            <div class="run-col-head">
+              <span class="eyebrow dark">Rejected &amp; retained</span
+              ><span class="label">sample of 143</span>
+            </div>
+            <div class="rejects" id="rejects"></div>
+          </div>
         </div>
-        <div class="field">
-          <span class="label">Peer panel</span>
-          <span class="value">8 banks · same archetype · size-ranked</span>
-          <span class="meta">incl. non-NIFTY</span>
+        <div class="run-done" id="runDone">
+          <span class="msg"
+            ><b>Discovery ready.</b> 1 high-confidence discovery · 1 runner-up ·
+            141 candidates rejected with reasons.</span
+          >
+          <a class="btn-ghost" href="#/discovery"
+            >Open discovery <span>→</span></a
+          >
+          <a
+            class="btn-ghost btn-report-link"
+            id="btnRunReport"
+            href="/api/report/KOTAKBANK"
+            target="_blank"
+            style="margin-left: 8px"
+            >View Dossier Report ↗</a
+          >
         </div>
-        <div class="field">
-          <span class="label">Output</span>
-          <span class="value">Discovery dossier · 8 required elements · full provenance</span>
-          <span class="meta">no recommendation</span>
+      </section>
+
+      <!-- ================= DISCOVERY ================= -->
+      <section class="view" id="view-discovery">
+        <div class="subtabs-wrap">
+          <div class="subtabs">
+            <a href="#/discovery" class="active">Discovery</a
+            ><a href="#/falsification">Falsification</a
+            ><a href="#/evidence">Evidence trail</a>
+          </div>
+          <div class="subtabs-actions">
+            <a
+              class="btn-action btn-report-link"
+              id="btnDossierReport"
+              href="/api/report/KOTAKBANK"
+              target="_blank"
+              >Official Report Dossier ↗</a
+            >
+            <button class="btn-action" onclick="window.print()">
+              Print Dossier (PDF)
+            </button>
+          </div>
         </div>
-        <div class="runbar">
-          <span class="hint">Live target: 5–7 min · this prototype replays a simulated run</span>
-          <button class="btn-run" id="runBtn">RUN RESEARCH <span class="arrow">→</span></button>
+        <div class="disclaimer">
+          <b>ILLUSTRATIVE PROTOTYPE OUTPUT</b
+          ><span
+            >Simulated values on a synthetic panel, shown to demonstrate the
+            structure of SIGNAL's output. This is not a finding about HDFC Bank
+            or any real company.</span
+          >
         </div>
-      </div>
 
-      <div class="status">
-        <div class="status-item"><div class="k"><span class="dot"></span>Ready to investigate</div><div class="v">no company tuning</div></div>
-        <div class="status-item"><div class="k"><span class="dot"></span>8-peer panel</div><div class="v">same archetype</div></div>
-        <div class="status-item"><div class="k"><span class="dot"></span>5-year history</div><div class="v">bitemporal facts</div></div>
-        <div class="status-item"><div class="k"><span class="dot"></span>Primary-source evidence</div><div class="v">filings · regulator</div></div>
-        <div class="status-item"><div class="k"><span class="dot"></span>Falsification enabled</div><div class="v">9 pre-registered tests</div></div>
-      </div>
-    </div>
-
-    <aside class="howrun">
-      <div class="eyebrow">What a run does</div>
-      <div class="stage-list" id="stageList"></div>
-      <div class="principle">
-        <div class="eyebrow">Principle</div>
-        <div class="big">Computed, not retrieved.</div>
-        <p>A non-obvious finding is not written down anywhere — retrieval can only return what someone has already said. SIGNAL computes it across documents, then tries to explain it away.</p>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- ================= RUN ================= -->
-<section class="view" id="view-run">
-  <div class="rail" id="rail"></div>
-  <div class="run-grid">
-    <div class="run-col">
-      <div class="run-col-head"><span class="eyebrow dark">Research log</span><span class="label" id="runClock">00:00</span></div>
-      <div class="log" id="log"></div>
-    </div>
-    <div class="run-col">
-      <div class="run-col-head"><span class="eyebrow dark">Discovery funnel</span><span class="label">every candidate is tested · none hand-picked</span></div>
-      <div class="funnel" id="funnel"></div>
-      <div class="funnel-foot"><span>Gates are fixed before the run. Every rejection is logged with its reason.</span><span class="mono small" id="funnelFoot">143 → 1</span></div>
-    </div>
-    <div class="run-col">
-      <div class="run-col-head"><span class="eyebrow dark">Rejected &amp; retained</span><span class="label">sample of 143</span></div>
-      <div class="rejects" id="rejects"></div>
-    </div>
-  </div>
-  <div class="run-done" id="runDone">
-    <span class="msg"><b>Discovery ready.</b> 1 high-confidence discovery · 1 runner-up · 141 candidates rejected with reasons.</span>
-    <a class="btn-ghost" href="#/discovery">Open discovery <span>→</span></a>
-    <a class="btn-ghost btn-report-link" id="btnRunReport" href="/api/report/KOTAKBANK" target="_blank" style="margin-left:8px;">View Dossier Report ↗</a>
-  </div>
-</section>
-
-<!-- ================= DISCOVERY ================= -->
-<section class="view" id="view-discovery">
-  <div class="subtabs-wrap">
-    <div class="subtabs"><a href="#/discovery" class="active">Discovery</a><a href="#/falsification">Falsification</a><a href="#/evidence">Evidence trail</a></div>
-    <div class="subtabs-actions">
-      <a class="btn-action btn-report-link" id="btnDossierReport" href="/api/report/KOTAKBANK" target="_blank">Official Report Dossier ↗</a>
-      <button class="btn-action" onclick="window.print()">Print Dossier (PDF)</button>
-    </div>
-  </div>
-  <div class="disclaimer"><b>ILLUSTRATIVE PROTOTYPE OUTPUT</b><span>Simulated values on a synthetic panel, shown to demonstrate the structure of SIGNAL's output. This is not a finding about HDFC Bank or any real company.</span></div>
-
-  <div class="disc-head">
-    <div>
-      <div class="disc-kicker"><span class="disc-title">DISCOVERY</span><span class="label">01 of 1 · asset quality · bank archetype</span></div>
-      <p class="disc-sentence" id="discSentence"></p>
-      <p class="disc-sub">The headline asset-quality improvement is real but is not what management says it is: it is write-off-led, not collections-led, and it coincides with a company-specific rise in fresh slippages that peers do not share.</p>
-      <div class="contract" id="contract"></div>
-    </div>
-    <div class="strength-card">
-      <div class="top">
-        <div><div class="label">Evidence strength</div><div class="grade">STRONG</div></div>
-        <div class="meter"><i></i><i></i><i></i></div>
-      </div>
-      <div class="kv"><span class="k">Falsification tests survived</span><span class="v">8 / 9</span></div>
-      <div class="kv"><span class="k">Independent source families</span><span class="v">3</span></div>
-      <div class="kv"><span class="k">Persistence</span><span class="v">5 quarters</span></div>
-      <div class="kv"><span class="k">Peer-specific</span><span class="v">outside IQR 4 of 4Q</span></div>
-      <div class="kv"><span class="k">Visibility gap</span><span class="v">4 quarters</span></div>
-      <div class="kv"><span class="k">Candidates considered</span><span class="v">143</span></div>
-    </div>
-  </div>
-
-  <div class="six" id="six"></div>
-
-  <div class="section">
-    <div class="section-head"><h2>Three expectations</h2><span class="aside">Expectation vs observed = breach</span></div>
-    <div class="expect-wrap" id="expectWrap">
-      <div class="expect-grid" id="expectGrid"></div>
-      <div class="equation" id="equation">
-        <div class="term"><div class="label">Expectation</div><div class="t">Slippage ~1.40% · peers ~1.44% · improvement collections-led</div></div>
-        <div class="op">vs</div>
-        <div class="term"><div class="label">Observed</div><div class="t">Slippage 2.20% · 71% of NPA reductions are write-offs</div></div>
-        <div class="op">=</div>
-        <div class="term breach"><div class="label">Breach · all three expectations</div><div class="t">Improvement is write-off-led while new stress rises — company-specific, persistent, unnarrated.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section two">
-    <div>
-      <div class="section-head"><h2>Why it matters</h2><span class="aside">3–5 points</span></div>
-      <ul class="bullets" id="whyList"></ul>
-    </div>
-    <div>
-      <div class="section-head"><h2>Numbers</h2><span class="aside">only what substantiates the finding · click to trace</span></div>
-      <table class="data" id="numbersTable"></table>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Timeline</h2><span class="aside">when the story changed, and when it became visible</span></div>
-    <div class="tl" id="timeline"></div>
-  </div>
-
-  <div class="section two">
-    <div>
-      <div class="section-head"><h2>Counterargument</h2><span class="aside">strongest surviving alternative</span></div>
-      <div class="callout soft">
-        <div class="label">AE4 · denominator effect — partially explains</div>
-        <div class="t">Fast loan growth dilutes the GNPA ratio. On a four-quarter-lagged basis the improvement shrinks from 69 bps to 45 bps — part of the headline is arithmetic, not credit.</div>
-        <div class="s">Why it does not overturn the finding: the write-off share (71% vs peer median 46%) and the slippage rise are unaffected by the denominator.</div>
-      </div>
-    </div>
-    <div>
-      <div class="section-head"><h2>Falsification condition</h2><span class="aside">what would make SIGNAL reconsider</span></div>
-      <div class="callout">
-        <div class="label">Pre-registered · monitored each quarter</div>
-        <div class="t" id="falsCond1"></div>
-        <div class="s">Mechanism kill clause: if credit cost falls while write-offs stay elevated, the write-off-led explanation is wrong.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Evidence</h2><span class="aside">corroboration counted by independent source family, not by document</span></div>
-    <div class="families" id="families"></div>
-  </div>
-</section>
-
-<!-- ================= FALSIFICATION ================= -->
-<section class="view" id="view-falsification">
-  <div class="subtabs-wrap">
-    <div class="subtabs"><a href="#/discovery">Discovery</a><a href="#/falsification" class="active">Falsification</a><a href="#/evidence">Evidence trail</a></div>
-    <div class="subtabs-actions">
-      <a class="btn-action btn-report-link" id="btnDossierReport2" href="/api/report/KOTAKBANK" target="_blank">Official Report Dossier ↗</a>
-      <button class="btn-action" onclick="window.print()">Print Dossier (PDF)</button>
-    </div>
-  </div>
-  <div class="disclaimer"><b>ILLUSTRATIVE PROTOTYPE OUTPUT</b><span>Simulated test results demonstrating the falsification battery. Not a finding about any real company.</span></div>
-  <div class="fals-head mt24">
-    <div>
-      <div class="eyebrow">Self-falsification</div>
-      <h1 class="mt8">TRY TO BREAK THE DISCOVERY</h1>
-      <p>Each alternative explanation is a deterministic test over data, registered before results are computed. The LLM does not argue; the data decides. The strongest alternative that survives becomes the reported counterargument.</p>
-      <div class="prereg"><span>Registered 14:02:11</span><span>Executed 14:03:47</span><span>Hypothesis H-01 · 9 tests · 2 corollaries</span></div>
-    </div>
-    <div class="survived">
-      <div class="label">Result</div>
-      <div class="big">SURVIVED 8 <small>/ 9 TESTS</small></div>
-      <div class="squares" id="squares"></div>
-      <div class="note">1 partial: denominator effect explains 24 of 69 bps of the headline improvement — disclosed as the counterargument.</div>
-    </div>
-  </div>
-  <table class="tests" id="testsTable"></table>
-
-  <div class="section two">
-    <div>
-      <div class="section-head"><h2>Testable consequences</h2><span class="aside">predictions not used to build the hypothesis</span></div>
-      <div class="corollaries" id="corollaries"></div>
-    </div>
-    <div>
-      <div class="section-head"><h2>Falsification condition</h2><span class="aside">future evidence that would overturn it</span></div>
-      <div class="callout">
-        <div class="t" id="falsCond2"></div>
-        <div class="s">Or if the peer-median slippage ratio rises to the subject's level — the effect would then be sector-wide, not company-specific.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Evidence strength</h2><span class="aside">deterministic rule — not an LLM judgement</span></div>
-    <div class="strength-rules" id="strengthRules"></div>
-  </div>
-</section>
-
-<!-- ================= EVIDENCE ================= -->
-<section class="view" id="view-evidence">
-  <div class="subtabs-wrap">
-    <div class="subtabs"><a href="#/discovery">Discovery</a><a href="#/falsification">Falsification</a><a href="#/evidence" class="active">Evidence trail</a></div>
-    <div class="subtabs-actions">
-      <a class="btn-action btn-report-link" id="btnDossierReport3" href="/api/report/KOTAKBANK" target="_blank">Official Report Dossier ↗</a>
-      <button class="btn-action" onclick="window.print()">Print Dossier (PDF)</button>
-    </div>
-  </div>
-  <div class="disclaimer"><b>ILLUSTRATIVE PROTOTYPE OUTPUT</b><span>Values, documents and page references below are simulated to demonstrate provenance. The source page is a synthetic render.</span></div>
-  <div class="section-head mt24"><h2>Every number resolves to a passage</h2><span class="aside">derived value → formula → inputs → document → page → passage</span></div>
-  <div class="ev-grid">
-    <div class="ev-list" id="evList"></div>
-    <div class="chain" id="chain"></div>
-  </div>
-  <div class="docs-table">
-    <div class="section-head"><h2>Documents behind this discovery</h2><span class="aside">tier = credibility · family = independence</span></div>
-    <table class="data" id="docsTable"></table>
-  </div>
-</section>
-
-<!-- ================= METHODOLOGY ================= -->
-<section class="view" id="view-methodology">
-  <div class="subtabs"><a href="#/methodology" class="active">Method</a><a href="#/generalization">Generalization</a></div>
-  <div class="two" style="align-items:end">
-    <div>
-      <div class="eyebrow">Methodology</div>
-      <p class="statement mt12">Expect · Breach · Survive. A discovery engine, not a report generator.</p>
-    </div>
-    <p class="muted">Candidates come from accounting-identity driver trees and the management claim ledger — never from mining arbitrary correlations. Each candidate must pass fixed gates and a falsification battery before it can be reported.</p>
-  </div>
-  <div class="method-flow mt24" id="methodFlow"></div>
-
-  <div class="section two">
-    <div>
-      <div class="section-head"><h2>Deterministic code vs language model</h2><span class="aside">the LLM never types a number</span></div>
-      <div class="codeval">
-        <div>
-          <h3>Code decides</h3>
-          <ul>
-            <li>XBRL parsing, table extraction checks, arithmetic reconciliation</li>
-            <li>Driver decomposition and peer residualisation</li>
-            <li>Robust surprise, persistence and specification curves</li>
-            <li>Falsification tests, gates, scoring and strength rule</li>
-            <li>Every rendered number (reference to a computed node)</li>
-          </ul>
+        <div class="disc-head">
+          <div>
+            <div class="disc-kicker">
+              <span class="disc-title">DISCOVERY</span
+              ><span class="label"
+                >01 of 1 · asset quality · bank archetype</span
+              >
+            </div>
+            <p class="disc-sentence" id="discSentence"></p>
+            <p class="disc-sub">
+              The headline asset-quality improvement is real but is not what
+              management says it is: it is write-off-led, not collections-led,
+              and it coincides with a company-specific rise in fresh slippages
+              that peers do not share.
+            </p>
+            <div class="contract" id="contract"></div>
+          </div>
+          <div class="strength-card">
+            <div class="top">
+              <div>
+                <div class="label">Evidence strength</div>
+                <div class="grade">STRONG</div>
+              </div>
+              <div class="meter"><i></i><i></i><i></i></div>
+            </div>
+            <div class="kv">
+              <span class="k">Falsification tests survived</span
+              ><span class="v">8 / 9</span>
+            </div>
+            <div class="kv">
+              <span class="k">Independent source families</span
+              ><span class="v">3</span>
+            </div>
+            <div class="kv">
+              <span class="k">Persistence</span
+              ><span class="v">5 quarters</span>
+            </div>
+            <div class="kv">
+              <span class="k">Peer-specific</span
+              ><span class="v">outside IQR 4 of 4Q</span>
+            </div>
+            <div class="kv">
+              <span class="k">Visibility gap</span
+              ><span class="v">4 quarters</span>
+            </div>
+            <div class="kv">
+              <span class="k">Candidates considered</span
+              ><span class="v">143</span>
+            </div>
+          </div>
         </div>
-        <div>
-          <h3>Language model reads &amp; writes</h3>
-          <ul>
-            <li>Turns transcripts and notes into typed, cited claims</li>
-            <li>Proposes mechanisms + computable corollaries for top candidates</li>
-            <li>Plans bounded counter-evidence searches</li>
-            <li>Writes prose bound to evidence IDs — digit-free</li>
-          </ul>
+
+        <div class="six" id="six"></div>
+
+        <div class="section">
+          <div class="section-head">
+            <h2>Three expectations</h2>
+            <span class="aside">Expectation vs observed = breach</span>
+          </div>
+          <div class="expect-wrap" id="expectWrap">
+            <div class="expect-grid" id="expectGrid"></div>
+            <div class="equation" id="equation">
+              <div class="term">
+                <div class="label">Expectation</div>
+                <div class="t">
+                  Slippage ~1.40% · peers ~1.44% · improvement collections-led
+                </div>
+              </div>
+              <div class="op">vs</div>
+              <div class="term">
+                <div class="label">Observed</div>
+                <div class="t">
+                  Slippage 2.20% · 71% of NPA reductions are write-offs
+                </div>
+              </div>
+              <div class="op">=</div>
+              <div class="term breach">
+                <div class="label">Breach · all three expectations</div>
+                <div class="t">
+                  Improvement is write-off-led while new stress rises —
+                  company-specific, persistent, unnarrated.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div>
-      <div class="section-head"><h2>Discovery score</h2><span class="aside">one weak dimension sinks a candidate</span></div>
-      <div class="score-formula">
-        Gates: reconciled · ≥2 families · ≥2Q persistence · no accounting artefact<br>
-        Score = GM<sub>w</sub>( surprise, specificity, persistence,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;materiality, corroboration, survival )<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;× narrative-gap × novelty<br>
-        <span class="muted">Weighted geometric mean · robust z-scores are ranking heuristics, not p-values · the full funnel is published with every run.</span>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ================= GENERALIZATION ================= -->
-<section class="view" id="view-generalization">
-  <div class="subtabs"><a href="#/methodology">Method</a><a href="#/generalization" class="active">Generalization</a></div>
-  <div class="two" style="align-items:end">
-    <div>
-      <div class="eyebrow">Generalization</div>
-      <p class="statement mt12">Defined at archetype level — not company level. No company-specific tuning.</p>
-    </div>
-    <p class="muted">Indian banks, NBFCs and insurers report in regulator-prescribed formats, so the driver trees are archetype-level by construction. An archetype router reads the reporting taxonomy; any listed company in the sector — including outside the NIFTY 50 — runs through the same code.</p>
-  </div>
-  <div class="section">
-    <div class="section-head"><h2>Archetypes</h2><span class="aside">depth of driver library</span></div>
-    <div class="arch" id="arch"></div>
-  </div>
-  <div class="section">
-    <div class="section-head"><h2>Benchmark design</h2><span class="aside">practice → held-out → non-NIFTY tie-break</span></div>
-    <div class="sets" id="sets"></div>
-  </div>
-  <div class="section">
-    <div class="section-head"><h2>What we will measure</h2><span class="aside">targets — results to be reported at the finals, not claimed here</span></div>
-    <table class="data" id="benchTable"></table>
-  </div>
-</section>
+        <div class="section two">
+          <div>
+            <div class="section-head">
+              <h2>Why it matters</h2>
+              <span class="aside">3–5 points</span>
+            </div>
+            <ul class="bullets" id="whyList"></ul>
+          </div>
+          <div>
+            <div class="section-head">
+              <h2>Numbers</h2>
+              <span class="aside"
+                >only what substantiates the finding · click to trace</span
+              >
+            </div>
+            <table class="data" id="numbersTable"></table>
+          </div>
+        </div>
 
-</main>
-<script src="script.js"></script>
-<script src="live.js"></script>
-</body>
+        <div class="section">
+          <div class="section-head">
+            <h2>Timeline</h2>
+            <span class="aside"
+              >when the story changed, and when it became visible</span
+            >
+          </div>
+          <div class="tl" id="timeline"></div>
+        </div>
+
+        <div class="section two">
+          <div>
+            <div class="section-head">
+              <h2>Counterargument</h2>
+              <span class="aside">strongest surviving alternative</span>
+            </div>
+            <div class="callout soft">
+              <div class="label">
+                AE4 · denominator effect — partially explains
+              </div>
+              <div class="t">
+                Fast loan growth dilutes the GNPA ratio. On a
+                four-quarter-lagged basis the improvement shrinks from 69 bps to
+                45 bps — part of the headline is arithmetic, not credit.
+              </div>
+              <div class="s">
+                Why it does not overturn the finding: the write-off share (71%
+                vs peer median 46%) and the slippage rise are unaffected by the
+                denominator.
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="section-head">
+              <h2>Falsification condition</h2>
+              <span class="aside">what would make SIGNAL reconsider</span>
+            </div>
+            <div class="callout">
+              <div class="label">Pre-registered · monitored each quarter</div>
+              <div class="t" id="falsCond1"></div>
+              <div class="s">
+                Mechanism kill clause: if credit cost falls while write-offs
+                stay elevated, the write-off-led explanation is wrong.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <h2>Evidence</h2>
+            <span class="aside"
+              >corroboration counted by independent source family, not by
+              document</span
+            >
+          </div>
+          <div class="families" id="families"></div>
+        </div>
+      </section>
+
+      <!-- ================= FALSIFICATION ================= -->
+      <section class="view" id="view-falsification">
+        <div class="subtabs-wrap">
+          <div class="subtabs">
+            <a href="#/discovery">Discovery</a
+            ><a href="#/falsification" class="active">Falsification</a
+            ><a href="#/evidence">Evidence trail</a>
+          </div>
+          <div class="subtabs-actions">
+            <a
+              class="btn-action btn-report-link"
+              id="btnDossierReport2"
+              href="/api/report/KOTAKBANK"
+              target="_blank"
+              >Official Report Dossier ↗</a
+            >
+            <button class="btn-action" onclick="window.print()">
+              Print Dossier (PDF)
+            </button>
+          </div>
+        </div>
+        <div class="disclaimer">
+          <b>ILLUSTRATIVE PROTOTYPE OUTPUT</b
+          ><span
+            >Simulated test results demonstrating the falsification battery. Not
+            a finding about any real company.</span
+          >
+        </div>
+        <div class="fals-head mt24">
+          <div>
+            <div class="eyebrow">Self-falsification</div>
+            <h1 class="mt8">TRY TO BREAK THE DISCOVERY</h1>
+            <p>
+              Each alternative explanation is a deterministic test over data,
+              registered before results are computed. The LLM does not argue;
+              the data decides. The strongest alternative that survives becomes
+              the reported counterargument.
+            </p>
+            <div class="prereg">
+              <span>Registered 14:02:11</span><span>Executed 14:03:47</span
+              ><span>Hypothesis H-01 · 9 tests · 2 corollaries</span>
+            </div>
+          </div>
+          <div class="survived">
+            <div class="label">Result</div>
+            <div class="big">SURVIVED 8 <small>/ 9 TESTS</small></div>
+            <div class="squares" id="squares"></div>
+            <div class="note">
+              1 partial: denominator effect explains 24 of 69 bps of the
+              headline improvement — disclosed as the counterargument.
+            </div>
+          </div>
+        </div>
+        <table class="tests" id="testsTable"></table>
+
+        <div class="section two">
+          <div>
+            <div class="section-head">
+              <h2>Testable consequences</h2>
+              <span class="aside"
+                >predictions not used to build the hypothesis</span
+              >
+            </div>
+            <div class="corollaries" id="corollaries"></div>
+          </div>
+          <div>
+            <div class="section-head">
+              <h2>Falsification condition</h2>
+              <span class="aside">future evidence that would overturn it</span>
+            </div>
+            <div class="callout">
+              <div class="t" id="falsCond2"></div>
+              <div class="s">
+                Or if the peer-median slippage ratio rises to the subject's
+                level — the effect would then be sector-wide, not
+                company-specific.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <h2>Evidence strength</h2>
+            <span class="aside">deterministic rule — not an LLM judgement</span>
+          </div>
+          <div class="strength-rules" id="strengthRules"></div>
+        </div>
+      </section>
+
+      <!-- ================= EVIDENCE ================= -->
+      <section class="view" id="view-evidence">
+        <div class="subtabs-wrap">
+          <div class="subtabs">
+            <a href="#/discovery">Discovery</a
+            ><a href="#/falsification">Falsification</a
+            ><a href="#/evidence" class="active">Evidence trail</a>
+          </div>
+          <div class="subtabs-actions">
+            <a
+              class="btn-action btn-report-link"
+              id="btnDossierReport3"
+              href="/api/report/KOTAKBANK"
+              target="_blank"
+              >Official Report Dossier ↗</a
+            >
+            <button class="btn-action" onclick="window.print()">
+              Print Dossier (PDF)
+            </button>
+          </div>
+        </div>
+        <div class="disclaimer">
+          <b>ILLUSTRATIVE PROTOTYPE OUTPUT</b
+          ><span
+            >Values, documents and page references below are simulated to
+            demonstrate provenance. The source page is a synthetic render.</span
+          >
+        </div>
+        <div class="section-head mt24">
+          <h2>Every number resolves to a passage</h2>
+          <span class="aside"
+            >derived value → formula → inputs → document → page → passage</span
+          >
+        </div>
+        <div class="ev-grid">
+          <div class="ev-list" id="evList"></div>
+          <div class="chain" id="chain"></div>
+        </div>
+        <div class="docs-table">
+          <div class="section-head">
+            <h2>Documents behind this discovery</h2>
+            <span class="aside"
+              >tier = credibility · family = independence</span
+            >
+          </div>
+          <table class="data" id="docsTable"></table>
+        </div>
+      </section>
+
+      <!-- ================= METHODOLOGY ================= -->
+      <section class="view" id="view-methodology">
+        <div class="subtabs">
+          <a href="#/methodology" class="active">Method</a
+          ><a href="#/generalization">Generalization</a>
+        </div>
+        <div class="two" style="align-items: end">
+          <div>
+            <div class="eyebrow">Methodology</div>
+            <p class="statement mt12">
+              Expect · Breach · Survive. A discovery engine, not a report
+              generator.
+            </p>
+          </div>
+          <p class="muted">
+            Candidates come from accounting-identity driver trees and the
+            management claim ledger — never from mining arbitrary correlations.
+            Each candidate must pass fixed gates and a falsification battery
+            before it can be reported.
+          </p>
+        </div>
+        <div class="method-flow mt24" id="methodFlow"></div>
+
+        <div class="section two">
+          <div>
+            <div class="section-head">
+              <h2>Deterministic code vs language model</h2>
+              <span class="aside">the LLM never types a number</span>
+            </div>
+            <div class="codeval">
+              <div>
+                <h3>Code decides</h3>
+                <ul>
+                  <li>
+                    XBRL parsing, table extraction checks, arithmetic
+                    reconciliation
+                  </li>
+                  <li>Driver decomposition and peer residualisation</li>
+                  <li>Robust surprise, persistence and specification curves</li>
+                  <li>Falsification tests, gates, scoring and strength rule</li>
+                  <li>Every rendered number (reference to a computed node)</li>
+                </ul>
+              </div>
+              <div>
+                <h3>Language model reads &amp; writes</h3>
+                <ul>
+                  <li>Turns transcripts and notes into typed, cited claims</li>
+                  <li>
+                    Proposes mechanisms + computable corollaries for top
+                    candidates
+                  </li>
+                  <li>Plans bounded counter-evidence searches</li>
+                  <li>Writes prose bound to evidence IDs — digit-free</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="section-head">
+              <h2>Discovery score</h2>
+              <span class="aside">one weak dimension sinks a candidate</span>
+            </div>
+            <div class="score-formula">
+              Gates: reconciled · ≥2 families · ≥2Q persistence · no accounting
+              artefact<br />
+              Score = GM<sub>w</sub>( surprise, specificity, persistence,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;materiality,
+              corroboration, survival )<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;× narrative-gap × novelty<br />
+              <span class="muted"
+                >Weighted geometric mean · robust z-scores are ranking
+                heuristics, not p-values · the full funnel is published with
+                every run.</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= GENERALIZATION ================= -->
+      <section class="view" id="view-generalization">
+        <div class="subtabs">
+          <a href="#/methodology">Method</a
+          ><a href="#/generalization" class="active">Generalization</a>
+        </div>
+        <div class="two" style="align-items: end">
+          <div>
+            <div class="eyebrow">Generalization</div>
+            <p class="statement mt12">
+              Defined at archetype level — not company level. No
+              company-specific tuning.
+            </p>
+          </div>
+          <p class="muted">
+            Indian banks, NBFCs and insurers report in regulator-prescribed
+            formats, so the driver trees are archetype-level by construction. An
+            archetype router reads the reporting taxonomy; any listed company in
+            the sector — including outside the NIFTY 50 — runs through the same
+            code.
+          </p>
+        </div>
+        <div class="section">
+          <div class="section-head">
+            <h2>Archetypes</h2>
+            <span class="aside">depth of driver library</span>
+          </div>
+          <div class="arch" id="arch"></div>
+        </div>
+        <div class="section">
+          <div class="section-head">
+            <h2>Benchmark design</h2>
+            <span class="aside">practice → held-out → non-NIFTY tie-break</span>
+          </div>
+          <div class="sets" id="sets"></div>
+        </div>
+        <div class="section">
+          <div class="section-head">
+            <h2>What we will measure</h2>
+            <span class="aside"
+              >targets — results to be reported at the finals, not claimed
+              here</span
+            >
+          </div>
+          <table class="data" id="benchTable"></table>
+        </div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+    <script src="live.js"></script>
+  </body>
 </html>
