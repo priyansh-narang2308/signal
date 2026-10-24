@@ -7,6 +7,7 @@ Usage:
 import json
 import os
 import sys
+import urllib.parse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(HERE, "results")
@@ -314,7 +315,7 @@ def generate_html_report(sym):
     <div class="step-content">
       <strong>{item.get("v", "")}</strong> ({item.get("k", "")})<br>
       <span style="font-size: 11px; color: #6b7280;">Formula: {" ".join(f"{op} {t}" for op, t in item.get("formula", []))}</span><br>
-      {f'<a href="{item.get("url")}" target="_blank" style="color: #2563eb; text-decoration: underline; font-size: 10px;">Open official NSE XBRL filing ↗</a>' if item.get("url") else ""}
+      {f'''<a href="http://127.0.0.1:8765/view/filing?url={urllib.parse.quote(item.get("url", ""))}" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: underline; font-size: 11px;">Inspect Audited Financial Statement ↗</a> <span style="font-size: 10px; color: #9ca3af;">(<a href="{item.get("url")}" target="_blank" style="color: #9ca3af; text-decoration: underline;">Direct NSE Raw XML ↗</a>)</span>''' if item.get("url") else ""}
     </div>
   </div>""" for item in ev_items.values())}
 </div>

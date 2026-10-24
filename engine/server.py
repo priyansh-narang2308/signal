@@ -131,9 +131,143 @@ class H(SimpleHTTPRequestHandler):
                 self.wfile.write(content)
                 return
             return self._json({"error": "report not found"}, 404)
+        if p in ("/view/filing", "/api/filing"):
+            furl = (qs.get("url") or [""])[0].strip()
+            if not furl:
+                return self._json({"error": "url parameter required"}, 400)
+            try:
+                from signal_live import nse, xbrl
+                raw = nse.xbrl(furl)
+                parsed = xbrl.parse(raw)
+                mapped = library.map_facts(parsed.get("facts", {}))
+                html = self._render_filing_inspector(furl, parsed, mapped)
+                body = html.encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            except Exception as e:
+                return self._json({"error": f"Failed to inspect filing: {e}"}, 500)
         if p == "/":
             self.path = "/index.html"
         return super().do_GET()
+
+    def _render_filing_inspector(self, url, parsed, mapped):
+        from signal_live import xbrl
+        period = parsed.get("period_end", "Unknown")
+        basis = xbrl.basis(parsed) or "Standalone"
+        facts = parsed.get("facts", {})
+        LABEL_MAP = {
+            "interest_earned": "Interest Earned (Gross)",
+            "interest_expended": "Interest Expended (Interest Expense)",
+            "other_income": "Other / Non-Interest Income",
+            "total_income": "Total Income",
+            "opex": "Operating Expenses",
+            "employee": "Employee Cost",
+            "provisions": "Provisions & Contingencies",
+            "pbt": "Profit Before Tax (PBT)",
+            "pat": "Profit After Tax (PAT / Net Profit)",
+            "gnpa_amt": "Gross Non-Performing Assets (GNPA Amount)",
+            "gnpa_pct": "Gross NPA Ratio (%)",
+            "nnpa_amt": "Net Non-Performing Assets (NNPA Amount)",
+            "nnpa_pct": "Net NPA Ratio (%)",
+            "car": "Capital Adequacy Ratio (CAR / CET1 %)",
+            "roa": "Return on Assets (ROA %)",
+        }
+        def fmt_val(k, v):
+            if "pct" in k or k in ("car", "roa"):
+                return f"{v:.2f}%"
+            cr = v / 10000000.0
+            return f"₹{cr:,.2f} cr ({v:,.0f})"
+        rows_mapped = "".join(f"""
+        <tr>
+            <td style="font-weight:600; padding:10px 14px; border-bottom:1px solid #e5e7eb;">{LABEL_MAP.get(k, k.replace('_', ' ').title())}</td>
+            <td style="text-align:right; font-family:ui-monospace,SFMono-Regular,monospace; font-weight:700; padding:10px 14px; border-bottom:1px solid #e5e7eb;">{fmt_val(k, v)}</td>
+            <td style="font-family:ui-monospace,SFMono-Regular,monospace; color:#6b7280; font-size:11px; padding:10px 14px; border-bottom:1px solid #e5e7eb;">{tag}</td>
+        </tr>
+        """ for k, (v, tag) in sorted(mapped.items()))
+        rows_all = "".join(f"""
+        <tr>
+            <td style="font-family:ui-monospace,SFMono-Regular,monospace; font-weight:600; padding:6px 12px; border-bottom:1px solid #f3f4f6; font-size:12px;">{k}</td>
+            <td style="text-align:right; font-family:ui-monospace,SFMono-Regular,monospace; padding:6px 12px; border-bottom:1px solid #f3f4f6; font-size:12px;">{f'{v:,.2f}' if isinstance(v, (int, float)) else str(v)}</td>
+        </tr>
+        """ for k, v in sorted(facts.items()))
+        return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SIGNAL — Official Regulatory Filing Inspector</title>
+<style>
+  body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f9fafb; color: #111827; margin: 0; padding: 32px 48px; font-size: 13px; }}
+  .card {{ background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px; padding: 24px; }}
+  .head {{ display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111827; padding-bottom: 16px; margin-bottom: 20px; }}
+  .title {{ font-size: 18px; font-weight: 800; letter-spacing: 0.05em; }}
+  .sub {{ font-size: 12px; color: #6b7280; margin-top: 4px; }}
+  .badge {{ display: inline-block; background: #111827; color: #fff; padding: 3px 8px; font-size: 10px; font-weight: 700; border-radius: 4px; text-transform: uppercase; margin-left: 8px; }}
+  table {{ width: 100%; border-collapse: collapse; margin-top: 12px; }}
+  th {{ background: #f3f4f6; text-align: left; padding: 10px 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #4b5563; border-bottom: 2px solid #e5e7eb; }}
+  .btn {{ display: inline-flex; align-items: center; gap: 6px; background: #111827; color: #fff; padding: 8px 14px; font-size: 11px; font-weight: 600; text-decoration: none; border-radius: 4px; border: 1px solid #111827; }}
+  .btn-outline {{ background: #fff; color: #111827; border: 1px solid #d1d5db; }}
+  .btn:hover {{ opacity: 0.9; }}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="title">REGULATORY FILING INSPECTOR <span class="badge">Audited XBRL</span></div>
+      <div class="sub">National Stock Exchange of India (NSE) Corporate Filing Archives</div>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <a class="btn btn-outline" href="{url}" target="_blank" rel="noopener">Download Raw NSE XML ↗</a>
+      <a class="btn" href="javascript:window.close()">Close Window</a>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; background: #f9fafb; padding: 14px 18px; border-radius: 6px; border: 1px solid #e5e7eb; margin-bottom: 24px;">
+    <div><div style="font-size:10px; font-weight:700; color:#6b7280; text-transform:uppercase;">Period End</div><div style="font-family:ui-monospace,monospace; font-size:14px; font-weight:700; margin-top:2px;">{period}</div></div>
+    <div><div style="font-size:10px; font-weight:700; color:#6b7280; text-transform:uppercase;">Reporting Basis</div><div style="font-family:ui-monospace,monospace; font-size:14px; font-weight:700; margin-top:2px;">{basis}</div></div>
+    <div><div style="font-size:10px; font-weight:700; color:#6b7280; text-transform:uppercase;">Mapped Metrics</div><div style="font-family:ui-monospace,monospace; font-size:14px; font-weight:700; margin-top:2px;">{len(mapped)} canonical facts</div></div>
+    <div><div style="font-size:10px; font-weight:700; color:#6b7280; text-transform:uppercase;">Total Tagged Facts</div><div style="font-family:ui-monospace,monospace; font-size:14px; font-weight:700; margin-top:2px;">{len(facts)} disclosures</div></div>
+  </div>
+
+  <h3 style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 10px 0;">Audited Financial Statement Items (Normalized &amp; Reconciled)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 35%;">Financial Metric</th>
+        <th style="width: 35%; text-align: right;">Audited Canonical Value</th>
+        <th style="width: 30%;">Underlying Exchange XBRL Tag</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows_mapped}
+    </tbody>
+  </table>
+</div>
+
+<details class="card">
+  <summary style="font-weight: 700; cursor: pointer; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #4b5563;">
+    View All {len(facts)} Raw Tagged Facts Extracted from Instance Document ▾
+  </summary>
+  <table style="margin-top: 16px;">
+    <thead>
+      <tr>
+        <th style="width: 60%;">Tag Identifier</th>
+        <th style="width: 40%; text-align: right;">Reported Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows_all}
+    </tbody>
+  </table>
+</details>
+</body>
+</html>
+"""
 
     def do_HEAD(self):
         return self.do_GET()

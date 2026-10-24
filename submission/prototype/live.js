@@ -644,7 +644,7 @@
         .join("") +
       `<div><span class="op"></span><span class="res">${esc(e.res)}</span></div>`;
     const link = e.url
-      ? `<a class="btn-ghost" style="padding:5px 10px;font-size:10px" href="${esc(e.url)}" target="_blank" rel="noopener">Open filing ↗</a>`
+      ? `<a class="btn-ghost" style="padding:5px 10px;font-size:10px" href="/view/filing?url=${encodeURIComponent(e.url)}" target="_blank" rel="noopener">Inspect filing ↗</a>`
       : "";
     $("#chain").innerHTML = `
       <div class="chain-step"><div class="lab" data-n="01">Derived value</div><div><div class="derived-v">${esc(e.v)}</div><div class="derived-k">${esc(e.k)}</div></div></div>
@@ -668,7 +668,7 @@
         .reverse()
         .map(
           (f) =>
-            `<tr><td colspan="4" style="color:var(--ink-3)">↳ ${esc(r.company)} · ${esc(f.label)} · filed ${esc(f.filed)}</td><td colspan="2" class="r"><a class="srcref" href="${esc(f.url)}" target="_blank" rel="noopener" style="text-decoration:underline">open XBRL ↗</a></td></tr>`,
+            `<tr><td colspan="4" style="color:var(--ink-3)">↳ ${esc(r.company)} · ${esc(f.label)} · filed ${esc(f.filed)}</td><td colspan="2" class="r"><a class="srcref" href="/view/filing?url=${encodeURIComponent(f.url)}" target="_blank" rel="noopener" style="text-decoration:underline">inspect statement ↗</a></td></tr>`,
         )
         .join("");
   }
