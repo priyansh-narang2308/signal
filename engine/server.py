@@ -13,10 +13,13 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from signal_live import library, run  # noqa: E402
+import export_report
 
 UI = os.path.join(os.path.dirname(HERE), "submission", "prototype")
 RESULTS = os.path.join(HERE, "results")
+REPORTS = export_report.REPORTS_DIR
 os.makedirs(RESULTS, exist_ok=True)
+os.makedirs(REPORTS, exist_ok=True)
 JOBS = {}
 
 
@@ -30,6 +33,10 @@ def _start(symbol):
         if job.result:
             with open(os.path.join(RESULTS, job.symbol.upper() + ".json"), "w", encoding="utf-8") as f:
                 json.dump(job.result, f)
+            try:
+                export_report.generate_html_report(job.symbol)
+            except Exception as e:
+                sys.stderr.write(f"  Report export error: {e}\n")
     threading.Thread(target=work, daemon=True).start()
     return jid
 
@@ -94,9 +101,42 @@ class H(SimpleHTTPRequestHandler):
                 with open(path, encoding="utf-8") as f:
                     return self._json(json.load(f))
             return self._json({"error": "no cached result"}, 404)
+        if p.startswith("/api/report/"):
+            sym = p.rsplit("/", 1)[-1].upper()
+            rep_path = os.path.join(REPORTS, f"{sym}_RESEARCH_DOSSIER.html")
+            if not os.path.exists(rep_path):
+                rep_path = export_report.generate_html_report(sym)
+            if rep_path and os.path.exists(rep_path):
+                with open(rep_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+            return self._json({"error": f"no report for {sym}"}, 404)
+        if p.startswith("/reports/"):
+            fname = os.path.basename(p)
+            fpath = os.path.join(REPORTS, fname)
+            if os.path.exists(fpath):
+                with open(fpath, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+            return self._json({"error": "report not found"}, 404)
         if p == "/":
             self.path = "/index.html"
         return super().do_GET()
+
+    def do_HEAD(self):
+        return self.do_GET()
 
 
 def main():

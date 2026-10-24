@@ -30,6 +30,20 @@
           fillList();
           updateMeta();
         });
+      fetch("/api/cached/KOTAKBANK")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((k) => {
+          if (k && !LIVE.result) {
+            LIVE.result = k;
+            setContext(k, false);
+            if (k.discovery) {
+              renderDiscovery(k);
+              renderFalsification(k);
+              renderDocs(k);
+            }
+          }
+        })
+        .catch(() => {});
     })
     .catch(() => {});
 
@@ -190,7 +204,7 @@
       .join("");
     const d = r.discovery;
     $("#runDone").classList.add("on");
-    $("#runDone a").style.display = d ? "" : "none";
+    $$("#runDone a").forEach((el) => (el.style.display = d ? "" : "none"));
     $("#runDone .msg").innerHTML = d
       ? `<b>Discovery ready.</b> ${esc(r.company)} · ${esc(d.metric)} · strength <b>${esc(d.strength)}</b> · ${r.funnel[0].c} breaches tested · ${r.n_filings} filings in ${Math.round(r.run_seconds)}s`
       : `<b>No discovery.</b> ${esc(r.note || "")}`;
@@ -213,6 +227,11 @@
       <span class="ctx mono small">Live · computed from NSE XBRL filings</span>`;
     $$(".disclaimer").forEach((el) => {
       el.innerHTML = `<b>LIVE RUN</b><span>Computed now from ${esc(r.company)}'s and ${r.peers.length} peers' exchange XBRL filings. Every number links to its filing. Not investment advice.</span>`;
+    });
+    const sym = r.symbol || "KOTAKBANK";
+    const repUrl = `/api/report/${encodeURIComponent(sym)}`;
+    $$(".btn-report-link").forEach((a) => {
+      a.href = repUrl;
     });
   }
 

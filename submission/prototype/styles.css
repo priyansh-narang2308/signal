@@ -96,10 +96,31 @@ a { color: inherit; text-decoration: none; }
 main { min-height: calc(100vh - 52px); }
 .view { display: none; padding: 32px var(--pad) 56px; }
 .view.active { display: block; }
-.subtabs { display: flex; gap: 22px; border-bottom: 1px solid var(--rule); margin: -8px 0 28px; }
+.subtabs-wrap { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--rule); margin: -8px 0 28px; }
+.subtabs { display: flex; gap: 22px; margin: 0; border-bottom: none; }
 .subtabs a { font-size: 12.5px; color: var(--ink-3); padding: 0 0 11px; position: relative; }
 .subtabs a.active { color: var(--ink); font-weight: 500; }
 .subtabs a.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1.5px; background: var(--ink); }
+.subtabs-actions { display: flex; gap: 10px; margin-bottom: 7px; }
+.btn-action {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 3px;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: var(--paper);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all .15s ease;
+  text-decoration: none;
+}
+.btn-action:hover {
+  background: var(--ink);
+  color: #fff;
+}
 
 .section { margin-top: 36px; }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--ink); margin-bottom: 18px; }
@@ -465,3 +486,15 @@ table.tests td.verdict { width: 92px; text-align: right; }
 .static *, .video * { transition: none !important; }
 body.noscroll { overflow: hidden; }
 body.static::-webkit-scrollbar, body.video::-webkit-scrollbar { display: none; }
+
+/* Print styles for dossier export */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body { min-width: 100% !important; background: #fff !important; color: #111827 !important; font-size: 11px !important; }
+  .topbar, .contextbar, .subtabs-actions, .disclaimer, #runBtn, .subtabs, .nav { display: none !important; }
+  main { min-height: auto !important; }
+  .view { display: none !important; padding: 0 !important; }
+  #view-discovery.active, #view-discovery { display: block !important; }
+  .disc-head, .grid-3, .split, .card { break-inside: avoid; }
+  a { text-decoration: none !important; color: inherit !important; }
+}

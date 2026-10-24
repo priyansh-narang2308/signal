@@ -118,6 +118,11 @@ def cmd_run(sym):
     os.makedirs(os.path.join(HERE, "results"), exist_ok=True)
     with open(os.path.join(HERE, "results", sym.upper() + ".json"), "w", encoding="utf-8") as f:
         json.dump(job.result, f)
+    try:
+        import export_report
+        export_report.generate_html_report(sym)
+    except Exception as e:
+        print("Report export warning:", e)
     print("\nwriter:", job.result.get("writer"), "· run time %.0fs" % job.result.get("run_seconds", 0))
     return 0
 

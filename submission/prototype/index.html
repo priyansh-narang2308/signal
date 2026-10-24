@@ -124,12 +124,19 @@
   <div class="run-done" id="runDone">
     <span class="msg"><b>Discovery ready.</b> 1 high-confidence discovery · 1 runner-up · 141 candidates rejected with reasons.</span>
     <a class="btn-ghost" href="#/discovery">Open discovery <span>→</span></a>
+    <a class="btn-ghost btn-report-link" id="btnRunReport" href="/api/report/KOTAKBANK" target="_blank" style="margin-left:8px;">View Dossier Report ↗</a>
   </div>
 </section>
 
 <!-- ================= DISCOVERY ================= -->
 <section class="view" id="view-discovery">
-  <div class="subtabs"><a href="#/discovery" class="active">Discovery</a><a href="#/falsification">Falsification</a><a href="#/evidence">Evidence trail</a></div>
+  <div class="subtabs-wrap">
+    <div class="subtabs"><a href="#/discovery" class="active">Discovery</a><a href="#/falsification">Falsification</a><a href="#/evidence">Evidence trail</a></div>
+    <div class="subtabs-actions">
+      <a class="btn-action btn-report-link" id="btnDossierReport" href="/api/report/KOTAKBANK" target="_blank">Official Report Dossier ↗</a>
+      <button class="btn-action" onclick="window.print()">Print Dossier (PDF)</button>
+    </div>
+  </div>
   <div class="disclaimer"><b>ILLUSTRATIVE PROTOTYPE OUTPUT</b><span>Simulated values on a synthetic panel, shown to demonstrate the structure of SIGNAL's output. This is not a finding about HDFC Bank or any real company.</span></div>
 
   <div class="disc-head">
@@ -212,7 +219,13 @@
 
 <!-- ================= FALSIFICATION ================= -->
 <section class="view" id="view-falsification">
-  <div class="subtabs"><a href="#/discovery">Discovery</a><a href="#/falsification" class="active">Falsification</a><a href="#/evidence">Evidence trail</a></div>
+  <div class="subtabs-wrap">
+    <div class="subtabs"><a href="#/discovery">Discovery</a><a href="#/falsification" class="active">Falsification</a><a href="#/evidence">Evidence trail</a></div>
+    <div class="subtabs-actions">
+      <a class="btn-action btn-report-link" id="btnDossierReport2" href="/api/report/KOTAKBANK" target="_blank">Official Report Dossier ↗</a>
+      <button class="btn-action" onclick="window.print()">Print Dossier (PDF)</button>
+    </div>
+  </div>
   <div class="disclaimer"><b>ILLUSTRATIVE PROTOTYPE OUTPUT</b><span>Simulated test results demonstrating the falsification battery. Not a finding about any real company.</span></div>
   <div class="fals-head mt24">
     <div>
@@ -252,7 +265,13 @@
 
 <!-- ================= EVIDENCE ================= -->
 <section class="view" id="view-evidence">
-  <div class="subtabs"><a href="#/discovery">Discovery</a><a href="#/falsification">Falsification</a><a href="#/evidence" class="active">Evidence trail</a></div>
+  <div class="subtabs-wrap">
+    <div class="subtabs"><a href="#/discovery">Discovery</a><a href="#/falsification">Falsification</a><a href="#/evidence" class="active">Evidence trail</a></div>
+    <div class="subtabs-actions">
+      <a class="btn-action btn-report-link" id="btnDossierReport3" href="/api/report/KOTAKBANK" target="_blank">Official Report Dossier ↗</a>
+      <button class="btn-action" onclick="window.print()">Print Dossier (PDF)</button>
+    </div>
+  </div>
   <div class="disclaimer"><b>ILLUSTRATIVE PROTOTYPE OUTPUT</b><span>Values, documents and page references below are simulated to demonstrate provenance. The source page is a synthetic render.</span></div>
   <div class="section-head mt24"><h2>Every number resolves to a passage</h2><span class="aside">derived value → formula → inputs → document → page → passage</span></div>
   <div class="ev-grid">
